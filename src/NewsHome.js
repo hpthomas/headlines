@@ -44,7 +44,10 @@ class NewsHome extends React.Component {
 			});
 			this.props.gotPosts(posts);
 		})
-		.catch(e=>console.log(e));
+		.catch(e=>{
+			console.log(e);
+			this.props.gotPosts([]);
+		});
 	}
 
 	render() {

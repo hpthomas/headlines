@@ -56,7 +56,8 @@ class AdminPanel extends React.Component {
     e.preventDefault();
     this.state.tweets.forEach(tweet => {
       if (tweet.status===Status.SELECTED) {
-        this.props.firebase.newArticle(tweet.title, tweet.url, tweet.cat, false);
+        this.props.firebase.newArticle(tweet.title, tweet.url, tweet.cat, false)
+        .then(res=>this.props.history.push("/news"));
       }
     });
   }
@@ -73,6 +74,12 @@ class AdminPanel extends React.Component {
       </div>
       );
   }
+  killDB() {
+    this.props.firebase.clearToday()
+    .then(res=>{
+      this.props.history.push('/news');
+    })
+  }
   render() {
       let categories = [ 
         "general","sports","politics"
@@ -81,7 +88,7 @@ class AdminPanel extends React.Component {
         return (
           <div>
             <button onClick={this.submit.bind(this)}>submit</button>
-            <button onClick={this.show.bind(this)}>show</button>
+            <button onClick={this.show.bind(this)}>edit</button>
             {
               this.state.tweets.filter(tweet=>tweet.status===Status.SELECTED)
               .map(tweet=>this.preview(tweet))
@@ -91,8 +98,8 @@ class AdminPanel extends React.Component {
       else if (this.state.tweets) {
         return (
         <div> 
-          <button onClick={this.submit.bind(this)}>submit</button>
           <button onClick={this.show.bind(this)}>show</button>
+          <button onClick={this.killDB.bind(this)}>kill database</button>
           {this.state.tweets.map(tweet =>
             <AdminVerifyStory 
                 categories={categories} 

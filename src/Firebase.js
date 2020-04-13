@@ -71,14 +71,12 @@ class Firebase {
 	    return this.auth.currentUser.updatePassword(newPass);
 	}
 
-	//TODO: 'old' arg is for submitting an article with yesterday's timestamp
-	// must be removed in production
+	//TODO get rid of old
 	newArticle = (title,url,category, old) => {
 		if (!this.auth.currentUser) return; //should not happen
 		let posts = this.db.ref("stories");
 		let newPost = posts.push();
 		// TODO add timestamp maybe? encoded in fb auto-generated key but cryptic
-		// don't need to save user who submitted article - will be closed to users
 		let d = old ? yesterday() : date();
 		return newPost.set( {
 			title:title,
@@ -126,7 +124,7 @@ class Firebase {
 			var fakeUID = uuid.v4().substr(0,10);
 			var up = Math.random() >= 0.3;
 			updates[fakeUID] = up;
-		} 
+		}
 		console.log(updates);
 		post.update(updates);
 	}
@@ -180,7 +178,37 @@ class Firebase {
 		return this.functions.httpsCallable('topNews')(params);
 	}
 
+	clearToday = () => {
+		let story_keys = null;
+		let submission_keys = null;
 
+		return this.getTopPosts()
+		.then(res=>res.val())
+		.then(children=>{
+			story_keys = Object.keys(children);
+			let submissions = story_keys.map(k => this.getSubmissionsForPost(k));
+			return Promise.all(submissions)
+		})
+		.then(res => res.map(r=>r.val()))
+		.then(submissions => {
+			let updates = {};
+			for (var i = 0; i < submissions.length; i++) {
+				let story_key = story_keys[i];
+				let submission = submissions[i];
+				updates['stories/' + story_key] = null;
+				for (var submission_key in submission) {
+					let uid = submission[submission_key].user;
+					updates['users/' + uid + '/stories/' + story_key] = null;
+					updates['submissions/' + submission_key] = null;
+				}
+			}
+			console.log(updates);
+			return this.db.ref().update(updates)
+		})	
+		.catch(e=>{
+			console.log(e);
+		})
+	}
 }
 
 export default Firebase;
