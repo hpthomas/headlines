@@ -96,9 +96,21 @@ button.vote-button.voted {
 .adminPanel .wrap {
   margin: 1em 10vw;
   width: 50vw;
-  background-color: #B0E0E6;
   text-align: left;
 }
+
+.bg1 {
+  background-color: #B0E0E6;
+}
+
+.bg2 {
+  background-color: #32CD32;
+}
+
+.bg3 {
+  background-color: #FFCCCC;
+}
+
 .adminPanel .wrap textarea {
   margin: 0em;
   width: 95%;
@@ -150,4 +162,11 @@ button.vote-button.voted {
 .new-post-buttons button{
   margin-right: 2em;
 }
+.tweetpreview {
+  margin-bottom:10px;
+}
  
+.tweetpreview p {
+  margin-top:2px;
+  margin-bottom:2px;
+}

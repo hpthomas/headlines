@@ -1,20 +1,13 @@
 import React from 'react';
 import uuid from 'uuid';
+
+
 class AdminVerifyStory extends React.Component {
 	constructor(props) {
 		super(props);
-		console.log(props);
 		this.state = {url:props.guess_url,title:props.guess_text};
 	}
 
-	linkAndText(tweet_text) {
-		return [];
-	}
-	submit(category) {
-		console.log(category);
-		console.log(this.state.title);
-		console.log(this.state.url);
-	}
 
 	change(event) {
 		this.setState({[event.target.name]:event.target.value});
@@ -25,7 +18,7 @@ class AdminVerifyStory extends React.Component {
         <div className='adminPanel'>
           <form autoComplete='off' action=''>
 
-            <fieldset className='form-group wrap '>
+            <fieldset className={'form-group wrap ' + this.props.status}>
               <div className='input-name'>
               	<h2>{this.props.full}</h2>
               </div>
@@ -43,10 +36,21 @@ class AdminVerifyStory extends React.Component {
               	name='url' />
             </fieldset>
             <div className = 'new-post-buttons'>
-              <button onClick={this.props.cancel}>Cancel</button>
+			<button onClick={(ev)=> {ev.preventDefault();this.props.cancel(); } }>
+				Cancel
+			</button>
               {
               	this.props.categories.map( category => 
-              		<button key={uuid.v4()} type="button" onClick={this.submit.bind(this,category)}>{category}</button> )
+              		<button 
+              			key={uuid.v4()} 
+              			type="button" 
+              			onClick={(ev)=>{
+              				ev.preventDefault();
+              				this.props.save(category,this.state.url,this.state.title)
+              			}}
+	           			>
+              			{category}
+              		</button> )
               }
             </div>
           </form>

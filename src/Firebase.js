@@ -16,15 +16,21 @@ import uuid from 'uuid';
     appId: "1:924993359943:web:99b6abdc71d38c4316e162",
     measurementId: "G-LRJS1QWZZR"
   };
-// TODO: uncomment for actual date
-//let date = () => (new Date()).toJSON().slice(0,10);
-let date = () => "2020-01-08";
+
+let date = () => (new Date()).toJSON().slice(0,10);
+
+// 'production' means demo on bottonshelfnews.github.io, frozen to Jan 8th
+if (process.env.NODE_ENV === 'production') {
+	date = () => "2020-01-08";
+}
 let yesterday = () => 
 	(new Date(new Date().setDate(new Date().getDate()-1))).toJSON().slice(0,10);
 
 class Firebase {
 	// onAuthStateChange is a funciton called whenever a successful login/out occurs
 	constructor() {
+		console.log('hi from fb');
+		console.log(process.env.NODE_ENV);
 		app.initializeApp(firebaseConfig);
 		this.auth = app.auth();
 		this.db = app.database();
