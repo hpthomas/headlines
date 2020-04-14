@@ -12,7 +12,7 @@ code {
     monospace;
 }
  body {
-  background-color: #ddd;
+  background-color: #ddd !important; /*Webpack replaces this otherwise - why?? */
   width: 100vw;
 }
 .top {

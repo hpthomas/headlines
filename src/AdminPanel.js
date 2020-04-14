@@ -6,15 +6,26 @@ import AdminVerifyStory from './AdminVerifyStory';
 
 let Status = {NONE:"bg1",SELECTED:"bg2",REJECTED:"bg3"};
 
+
+let TweetPreview = (props) =>
+     (
+      <div className="tweetpreview">
+        <p><strong>{props.tweet.cat}</strong></p>
+        <p>{props.tweet.title}</p>
+        <p><a href={props.tweet.url}>{props.tweet.url}</a></p>
+      </div>
+      );
+
 class AdminPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {tweets:null, to_submit:[]};
+    this.state = {handle: "", tweets:null, to_submit:[], submitting: false};
   }
 
-  componentDidMount() {
+
+  fetchTweets(handle, num) {
     let score = (tweet) => tweet.favorite_count;
-    this.props.firebase.getRecentTweets('ap')
+    this.props.firebase.getRecentTweets(handle, num)
     .then(result=>result.data)
     .then(tweets=>tweets.sort( (t1,t2)=>score(t2)-score(t1)) )
     .then(tweets=>{
@@ -22,9 +33,16 @@ class AdminPanel extends React.Component {
         tweet.status=Status.NONE;
         tweet.id=uuid.v4();
       });
-      window.t=tweets;
-      this.setState({tweets:tweets, submitting: false});
-    })
+      this.setState({tweets:tweets});
+    });
+  }
+  fetchCustomTweets(event) {
+    event.preventDefault();
+    this.fetchTweets(this.state.handle, 50);
+  }
+
+  handleChange(event) {
+    this.setState({handle:event.target.value});
   }
   cancel(id) {
     let tweets = this.state.tweets;
@@ -65,15 +83,6 @@ class AdminPanel extends React.Component {
     this.setState({submitting: !this.state.submitting})
   }
 
-  preview(tweet) {
-    return (
-      <div className="tweetpreview">
-        <p><strong>{tweet.cat}</strong></p>
-        <p>{tweet.title}</p>
-        <p><a href={tweet.url}>{tweet.url}</a></p>
-      </div>
-      );
-  }
   killDB() {
     this.props.firebase.clearToday()
     .then(res=>{
@@ -91,14 +100,15 @@ class AdminPanel extends React.Component {
             <button onClick={this.show.bind(this)}>edit</button>
             {
               this.state.tweets.filter(tweet=>tweet.status===Status.SELECTED)
-              .map(tweet=>this.preview(tweet))
+              .map(tweet=> <TweetPreview tweet={tweet} key={uuid.v4()} />)
             }
           </div>)
       }
       else if (this.state.tweets) {
         return (
         <div> 
-          <button onClick={this.show.bind(this)}>show</button>
+          <button style={{margin:"10px"}} onClick={()=>this.setState({tweets:null})}>Clear</button>
+          <button onClick={this.show.bind(this)}>show selections</button>
           <button onClick={this.killDB.bind(this)}>kill database</button>
           {this.state.tweets.map(tweet =>
             <AdminVerifyStory 
@@ -115,7 +125,21 @@ class AdminPanel extends React.Component {
           );
       }
       else {
-        return <div>no tweets fetched </div>;
+        return (
+        <div>
+
+
+          <form onSubmit={this.fetchCustomTweets.bind(this)}>
+            <button type="button" style={{margin:"10px"}} onClick={()=>this.fetchTweets("ap",50)}>Fetch AP Tweets</button>
+            <button type="button" style={{margin:"10px"}} onClick={()=>this.fetchTweets("abc",50)}>Fetch ABC News Tweets</button>
+
+            <input type='text' placeholder="@handle" value={this.state.handle} onChange={this.handleChange.bind(this)} />
+            <button type='submit'>Fetch Custom Tweets</button>
+
+          </form>
+
+          <button style={{margin:"10px"}} onClick={this.killDB.bind(this)}>kill database</button>
+        </div> );
       }
   }
 }

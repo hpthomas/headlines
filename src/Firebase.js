@@ -173,14 +173,14 @@ class Firebase {
 		return this.db.ref('/stories/' + postID).once('value');
 	}
 
-	getRecentTweets = (handle) => {
+	// TODO num is not implemented on server, fetches 50(?) by default
+	getRecentTweets = (handle, num) => {
 		let params = {handle:handle};
 		return this.functions.httpsCallable('topNews')(params);
 	}
 
 	clearToday = () => {
 		let story_keys = null;
-		let submission_keys = null;
 
 		return this.getTopPosts()
 		.then(res=>res.val())
