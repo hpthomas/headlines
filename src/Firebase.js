@@ -104,7 +104,6 @@ class Firebase {
 	}
 
 	newHeadline = (storyID,headline) => {
-		console.log(storyID, headline);
 		if (!this.auth.currentUser) return; //should not happen
 		// TODO  This was originally storysubmissions/storyID/newkey
 		// Moved to submissions to guarantee uniqueness - needed??
@@ -189,6 +188,24 @@ class Firebase {
 	getRecentTweets = (handle, num) => {
 		let params = {handle:handle};
 		return this.functions.httpsCallable('topNews')(params);
+	}
+
+	deleteStory = (storyID) => {
+		let updates = {};
+		updates['stories/' + storyID] = null;
+		updates['storysubmissions/' + storyID] = null;
+		console.log(updates);
+		return this.getSubmissionsForPost(storyID)
+		.then(res=>res.val())
+		.then(headlines => {
+			for (var hl in headlines){
+				let user = headlines[hl].user;
+				updates['submissions/' + hl] = null;
+				updates['users/' + user + '/stories/' + storyID] = null;	
+			}
+			console.log(updates);
+			return this.db.ref().update(updates);
+		});
 	}
 
 	clearToday = () => {

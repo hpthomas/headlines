@@ -17,7 +17,6 @@ class Item extends React.Component {
   submit(title) {
     if (!title) return;
     let newkey = this.props.firebase.newHeadline(this.props.postID, title);
-    //console.log(this.props.headlines[0]);
     let newhl = {headline:title, 
                  user:this.props.user.uid, 
                  username:this.props.user.displayName, 
@@ -26,6 +25,7 @@ class Item extends React.Component {
                  votes: {[this.props.user.uid]:true}};
     this.setState({headlines:this.state.headlines.concat([newhl])});
   }
+
   vote(headlineID, v) {
     let newhl = this.state.headlines.slice(0);
     for (var i=0; i<this.state.headlines.length; i++) {
@@ -40,13 +40,18 @@ class Item extends React.Component {
     }
     this.setState({headlines:newhl});
   }
+  delete(postID) {
+    this.props.firebase.deleteStory(postID)
+    .then(()=>this.props.history.push('/news'));
+  }
   render() {
-    //console.log(this.props.headlines);
     return (
       <li className='news-item'>
+
         <p>
           <Link to={'/detail/' + this.props.postID} className='original-title' >{this.props.orTitle}</Link>
         </p>
+
         {this.state.headlines.map(headline =>
             <Rewrite
               key={uuid.v4()}
@@ -55,17 +60,33 @@ class Item extends React.Component {
               rw={headline}
               vote={this.vote.bind(this, headline.key) }
             />
-          )
-        }
+          )  }
         
-        {
-        this.props.user && 
-          <NewSubmission submit={this.submit.bind(this)}/>
-        }
+        {this.props.user && 
+          <NewSubmission submit={this.submit.bind(this)}/>  }
+
+        {this.props.user && this.props.user.admin && 
+          <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
 
       </li>
      );
   }
+}
+
+let DeleteStory = (props) => {
+  let [confirm, setConfirm] = useState(false);
+  return (
+    <div>
+      {
+        confirm? 
+          <div>
+          <button type='button' onClick={()=>props.delete(props.id)}>Confirm</button>
+          <button type='button' onClick={()=>setConfirm(false)}>Cancel</button>
+          </div>
+        : <button type='button' onClick={()=>setConfirm(true)}>Delete Story</button>
+      }
+    </div>
+  )
 }
 
 let NewSubmission = (props) => {

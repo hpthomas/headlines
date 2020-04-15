@@ -96,6 +96,7 @@ class AdminPanel extends React.Component {
       if (this.state.submitting) {
         return (
           <div>
+            <button style={{margin:"10px"}} onClick={()=>this.props.history.push('/news')}>Cancel</button>
             <button onClick={this.submit.bind(this)}>submit</button>
             <button onClick={this.show.bind(this)}>edit</button>
             {
@@ -107,6 +108,7 @@ class AdminPanel extends React.Component {
       else if (this.state.tweets) {
         return (
         <div> 
+          <button style={{margin:"10px"}} onClick={()=>this.props.history.push('/news')}>Cancel</button>
           <button style={{margin:"10px"}} onClick={()=>this.setState({tweets:null})}>Clear</button>
           <button onClick={this.show.bind(this)}>show selections</button>
           <button onClick={this.killDB.bind(this)}>kill database</button>
@@ -130,6 +132,7 @@ class AdminPanel extends React.Component {
 
 
           <form onSubmit={this.fetchCustomTweets.bind(this)}>
+            <button style={{margin:"10px"}} onClick={()=>this.props.history.push('/news')}>Cancel</button>
             <button type="button" style={{margin:"10px"}} onClick={()=>this.fetchTweets("ap",50)}>Fetch AP Tweets</button>
             <button type="button" style={{margin:"10px"}} onClick={()=>this.fetchTweets("abc",50)}>Fetch ABC News Tweets</button>
 
