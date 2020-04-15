@@ -29,15 +29,17 @@ let yesterday = () =>
 class Firebase {
 	// onAuthStateChange is a funciton called whenever a successful login/out occurs
 	constructor() {
-		console.log('hi from fb');
-		console.log(process.env.NODE_ENV);
 		app.initializeApp(firebaseConfig);
 		this.auth = app.auth();
 		this.db = app.database();
 		this.functions = app.functions();
+		// handle user being already logged in
 		this.unsub = this.auth.onAuthStateChanged(user=>{
 			if (user) {
-				store.dispatch(loginAction(user));
+				user.getIdTokenResult().then(result=>{
+					user.admin = !!result.claims.admin; // set user.admin property for easier access
+					store.dispatch(loginAction(user));
+				});
 			}
 			this.unsub(); //unsubscribe to auth change - only want this to run once 
 		});
@@ -54,9 +56,24 @@ class Firebase {
 
 	login = (email, pass)=> {
 		if (!email || !pass) {
-			return this.auth.signInAnonymously();
+			return this.auth.signInAnonymously()
+			.then(res=>res.user)
+			.then(user=>{
+				user.admin=false;
+				return user;
+			});
 		}
-		return this.auth.signInWithEmailAndPassword(email, pass);
+		let user = null;
+		return this.auth.signInWithEmailAndPassword(email, pass)
+		.then(res=>{
+			user = res.user;
+			return user.getIdTokenResult();
+		})
+		.then(token=>{
+			user.admin = token.claims.admin;
+			console.log(user);
+			return user;
+		})
 	}
 
 	logOut = ()=> {
@@ -93,8 +110,6 @@ class Firebase {
 		// Moved to submissions to guarantee uniqueness - needed??
 		let post = this.db.ref("submissions/");
 		let newHeadlineKey = post.push().key;
-		console.log("push done");
-		console.log(newHeadlineKey);
 		let uid = this.auth.currentUser.uid;
 		let name = this.auth.currentUser.displayName;
 		let updates = {};
@@ -112,7 +127,6 @@ class Firebase {
 		updates['/submissions/' + newHeadlineKey] = 
 			{headline:headline, user:uid, username:name, key:newHeadlineKey, story:storyID};
 
-		console.log(updates);
 		this.db.ref().update(updates);
 		return newHeadlineKey;
 	}
@@ -125,13 +139,11 @@ class Firebase {
 			var up = Math.random() >= 0.3;
 			updates[fakeUID] = up;
 		}
-		console.log(updates);
 		post.update(updates);
 	}
 
 	// v can be true, false or null
 	vote = (storyID, headlineID, v) => {
-		console.log(storyID, headlineID, v);
 		if (!this.auth.currentUser) return; //should not happen
 		//console.log(this.auth.currentUser, postID, headlineID);
 		let post = this.db.ref("storysubmissions/" + storyID + "/" + headlineID + "/votes");
@@ -177,16 +189,6 @@ class Firebase {
 	getRecentTweets = (handle, num) => {
 		let params = {handle:handle};
 		return this.functions.httpsCallable('topNews')(params);
-	}
-	getUserAdminStatus(uid) {
-		return this.db.ref('/users/' + uid + "/admin").once('value');
-	}
-
-	makeAdmin(uid) {
-		console.log('hi');
-		console.log(uid);
-		this.db.ref('/users/' + uid)
-		.update({admin:true});
 	}
 
 	clearToday = () => {

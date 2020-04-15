@@ -13,6 +13,7 @@ import Detail from './Detail';
 import AdminPanel from './AdminPanel';
 
 function TopBar(props) {
+	window.u=props.user;
 	let logOut = ()=>{
 		props.firebase.logOut();
 		props.doLogout();
@@ -51,11 +52,10 @@ function TopBar(props) {
 						}
 					</ul>
 		        	<ul className="nav navbar-nav ml-auto">
-		        		{props.user &&  <li><span className="navbar-text">{props.user}</span></li>}
+		        		{props.user &&  <li><span className="navbar-text">{props.user.displayName || "anonymous"}</span></li>}
 		        		{ props.user? 
 			        		<li>
 								<button className="btn btn-primary float-right" onClick={logOut}>Log Out</button>
-								<button className="btn btn-primary float-right" onClick={()=>props.firebase.makeAdmin(props.uid)}> make me an admin</button>
 			        		</li>
 			        	 : 
 			        		<li>
@@ -83,7 +83,7 @@ function TopBar(props) {
 function mstp(state, ownProps) {
 	return {
 		firebase:state.firebase, 
-		user: state.user? (state.user.displayName || "anonymous") : null, 
+		user: state.user,
 		uid:state.user?state.user.uid:null};
 }
 function mdtp(disp) {

@@ -5,8 +5,8 @@ import loginAction from './actions/loginAction'
 class Landing extends React.Component {
 
 	guestLogin() {
-		this.props.firebase.login(null,null).then(res=>{
-			this.props.setLogin(res.user);
+		this.props.firebase.login(null,null).then(user=>{
+			this.props.setLogin(user);
 			this.props.history.push("/");	
 		});
 	}

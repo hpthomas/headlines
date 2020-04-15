@@ -11,21 +11,14 @@ class LoginForm extends React.Component {
 	submit(event) {
 		event.preventDefault();
 		this.props.firebase.login(this.state.email, this.state.pass)
-			.then(res=>{
+			.then(user=>{
 				this.setState({email:"",pass:""});
-				this.props.setLogin(res.user);
+				this.props.setLogin(user);
 				this.props.history.push("/");	
-				this.props.firebase.getUserAdminStatus(res.user.uid)
-				.then(res=>res.val())
-				.then(res=>console.log(res));
 			})
 			.catch(error=>{
 				//this.setState({error:error});
 			});
-	}
-
-	getUserAdminStatus(user) {
-		console.log(user.uid);
 	}
 
 	change(event) {
@@ -33,8 +26,8 @@ class LoginForm extends React.Component {
 	}
 
 	guestLogin() {
-		this.props.firebase.login(null,null).then(res=>{
-			this.props.setLogin(res.user);
+		this.props.firebase.login(null,null).then(user=>{
+			this.props.setLogin(user);
 			this.setState({email:"",pass:"", welcome:true});
 			this.props.history.push("/");	
 		});

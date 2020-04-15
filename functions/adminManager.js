@@ -1,5 +1,11 @@
-const admin = require("firebase-admin");
-admin.initializeApp();
+var admin = require("firebase-admin");
+var serviceAccount = require("./googleCredentials.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://bottomshelfnews.firebaseio.com"
+});
+
 function makeAdmin(uid) {
 	admin.auth().setCustomUserClaims(uid, {admin: true}).then((res) => {
 		console.log('done');
@@ -7,4 +13,4 @@ function makeAdmin(uid) {
 	});
 }
 
-module.exports=makeAdmin;
+exports.makeAdmin=makeAdmin;
