@@ -178,6 +178,16 @@ class Firebase {
 		let params = {handle:handle};
 		return this.functions.httpsCallable('topNews')(params);
 	}
+	getUserAdminStatus(uid) {
+		return this.db.ref('/users/' + uid + "/admin").once('value');
+	}
+
+	makeAdmin(uid) {
+		console.log('hi');
+		console.log(uid);
+		this.db.ref('/users/' + uid)
+		.update({admin:true});
+	}
 
 	clearToday = () => {
 		let story_keys = null;

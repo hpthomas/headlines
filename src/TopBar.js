@@ -55,6 +55,7 @@ function TopBar(props) {
 		        		{ props.user? 
 			        		<li>
 								<button className="btn btn-primary float-right" onClick={logOut}>Log Out</button>
+								<button className="btn btn-primary float-right" onClick={()=>props.firebase.makeAdmin(props.uid)}> make me an admin</button>
 			        		</li>
 			        	 : 
 			        		<li>
