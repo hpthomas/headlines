@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-#twitter secret keys
+#secret keys
 /functions/twitter_secrets.js
+/functions/googleCredentials.json
 
 # dependencies
 /node_modules
