@@ -42,7 +42,10 @@ class Item extends React.Component {
   }
   delete(postID) {
     this.props.firebase.deleteStory(postID)
-    .then(()=>this.props.history.push('/news'));
+    .then(()=>{
+      this.props.deleteSuccess(postID);
+      this.props.history.push('/news');
+    });
   }
   render() {
     return (

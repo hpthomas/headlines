@@ -2,6 +2,8 @@ import { createStore } from 'redux';
 import Firebase from './Firebase';
 
 function mainReducer(state, action) {
+	console.log('deucin');
+	console.log(action);
 	switch (action.type) {
 		case 'LOGIN_ACTION':
 			return {...state, user:action.user};

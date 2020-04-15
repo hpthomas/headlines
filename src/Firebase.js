@@ -190,6 +190,7 @@ class Firebase {
 		return this.functions.httpsCallable('topNews')(params);
 	}
 
+	// this deletes a story including all associated headline submissions
 	deleteStory = (storyID) => {
 		let updates = {};
 		updates['stories/' + storyID] = null;
@@ -208,35 +209,12 @@ class Firebase {
 		});
 	}
 
+	// this deletes everything added to the database today
 	clearToday = () => {
-		let story_keys = null;
-
 		return this.getTopPosts()
 		.then(res=>res.val())
-		.then(children=>{
-			story_keys = Object.keys(children);
-			let submissions = story_keys.map(k => this.getSubmissionsForPost(k));
-			return Promise.all(submissions)
-		})
-		.then(res => res.map(r=>r.val()))
-		.then(submissions => {
-			let updates = {};
-			for (var i = 0; i < submissions.length; i++) {
-				let story_key = story_keys[i];
-				let submission = submissions[i];
-				updates['stories/' + story_key] = null;
-				for (var submission_key in submission) {
-					let uid = submission[submission_key].user;
-					updates['users/' + uid + '/stories/' + story_key] = null;
-					updates['submissions/' + submission_key] = null;
-				}
-			}
-			console.log(updates);
-			return this.db.ref().update(updates)
-		})	
-		.catch(e=>{
-			console.log(e);
-		})
+		.then(posts=>Object.keys(posts || {}))
+		.then(postIDs=>  Promise.all(postIDs.map(this.deleteStory)));
 	}
 }
 
