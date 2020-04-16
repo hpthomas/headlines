@@ -30,12 +30,26 @@ class Landing extends React.Component {
 					You can view <Link to="/news">headlines and submissions</Link> now, 
 					or <Link to="/login">Log In</Link> to vote and submit! 
 				</p>
+
 				<p>
 					If you don't want to make an account, you can 
 					<button onClick={this.guestLogin.bind(this)}>continue as a guest</button>
 					. Guest accounts have full access to Bottom Shelf News features, 
 					but if you log out and return you won't be able to access the account again.
 				</p>
+
+				<p>
+					Because this is a demo, you can also view an admin-only feature.
+					To populate the site with daily articles, the <Link to="/admin"> admin control panel </Link> 
+					allows privileged users to automatically fetch tweets from popular news accounts on Twitter 
+					and batch-submit them.
+				</p>
+				<p>
+					Because you are (probably) not a bottomshelfnews.com administrator, 
+					you won't be able to actually submit the stories to the database, but you can view the functionality of the feature! 
+					Please <button onClick={this.guestLogin.bind(this)}>log in as a guest</button> before viewing the admin panel.
+				</p>
+
       </div>
     </div>
   </div> );
