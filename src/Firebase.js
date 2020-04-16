@@ -209,10 +209,21 @@ class Firebase {
 		});
 	}
 
+	deleteSubmission(storyID, submissionID, userID) {
+		let updates = {};
+		updates['storysubmissions/' + storyID + '/' + submissionID] = null;
+		updates['submissions/' + submissionID] = null;
+		updates['users/' + userID + '/stories/' + storyID+'/submissions/' + submissionID] = null;
+		return this.db.ref().update(updates);
+	}
+
 	// this deletes everything added to the database today
 	clearToday = () => {
 		return this.getTopPosts()
 		.then(res=>res.val())
+		.then(res=>{
+			console.log(res);return res;
+		})
 		.then(posts=>Object.keys(posts || {}))
 		.then(postIDs=>  Promise.all(postIDs.map(this.deleteStory)));
 	}
