@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
 import deleteAction from './actions/deleteAction';
+import deleteSubmissionAction from './actions/deleteSubmissionAction';
 import editAction from './actions/editAction';
 import Rewrite from './Rewrite';
 import {withRouter} from 'react-router-dom';
@@ -47,6 +48,9 @@ class Item extends React.Component {
       this.props.history.push('/news');
     });
   }
+  deleteSubmission(subID) {
+    this.setState({headlines: this.state.headlines.filter(hl=>hl.key!==subID)});
+  }
   render() {
     return (
       <li className='news-item'>
@@ -62,6 +66,7 @@ class Item extends React.Component {
               postID={this.props.postID} 
               rw={headline}
               vote={this.vote.bind(this, headline.key) }
+              delete={this.deleteSubmission.bind(this)}
             />
           )  }
         
@@ -123,6 +128,7 @@ let mstp = state=>({
 });
 let mdtp = dispatch =>({
   deleteSuccess: (id)=> dispatch(deleteAction(id)),
+  deleteSubmissionSuccess: (storyID, submissionID)=> dispatch(deleteSubmissionAction(storyID, submissionID)),
   editSuccess: (id,title,url)=>dispatch(editAction(id,title,url))
 });
 export default withRouter(connect(mstp,mdtp)(Item));

@@ -28,8 +28,10 @@ function mainReducer(state, action) {
 let deleteOneHeadlineFromPosts = (posts, postID, subID) => {
 	let p = posts.slice();
 	p.forEach(post=>{
-		if (post.postID==postID) {
-			post.headlines=post.headlines.filter(hl=>hl.key!=subID);
+		if (post.postID===postID) {
+			console.log(post.headlines);
+			post.headlines=post.headlines.filter(hl=>hl.key!==subID);
+			console.log(post.headlines);
 		}
 	});
 	return p;

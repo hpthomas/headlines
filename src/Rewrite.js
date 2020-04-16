@@ -1,10 +1,12 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import deleteSubmissionAction from './actions/deleteSubmissionAction';
 class Rewrite extends React.Component {
 	render() {
-		// if not logged in, props.uid==null. be more explicit??
+
+		let canVote = !!this.props.user;
+		let canDelete = canVote && this.props.user.uid===this.props.rw.user;
+		
 		let temp = this.props.rw.votes[this.props.user.uid];
 		let vote = 
 			(temp===true)? 1 : 
@@ -17,13 +19,13 @@ class Rewrite extends React.Component {
 			</div>
 		  	<div className='headlineinfo'>
 		  		<Link to={'/user/'+this.props.rw.user}>{this.props.rw.username}</Link>
-			    {this.props.user &&
+			    {canVote &&
 		    		<span style={{marginLeft:'4px'}} >
 		    			<span>Vote!</span>
 		    			{this.buttons(vote)}
 			    	</span>
 			    }
-			    {this.props.user && this.props.rw.user===this.props.user.uid && 
+			    {canDelete && 
 		    		<span style={{marginLeft:'4px'}} >
 		    			<button type='button' onClick={this.delete.bind(this)}>delete</button>
 			    	</span>
@@ -35,8 +37,9 @@ class Rewrite extends React.Component {
 	delete() {
 		this.props.firebase.deleteSubmission(this.props.postID, this.props.rw.key, this.props.rw.user)
 		.then(res=>{
-			this.props.deleteSuccess(this.props.postID, this.props.rw.key);
+			this.props.delete(this.props.rw.key);
 		})
+		.catch(err=>console.log('error:' + err));
 	}
 	buttons(vote) {
 		if (vote===0) {
@@ -71,8 +74,5 @@ let mstp = state=>({
 	firebase:state.firebase, 
 	user: state.user
 });
-let mdtp = dispatch =>({
-  deleteSuccess: (storyID, submissionID)=> dispatch(deleteSubmissionAction(storyID, submissionID)),
-});
 
-export default connect(mstp, mdtp)(Rewrite);
+export default connect(mstp)(Rewrite);
