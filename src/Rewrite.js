@@ -3,14 +3,19 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 class Rewrite extends React.Component {
 	render() {
-
-		let canVote = !!this.props.user;
-		let canDelete = canVote && this.props.user.uid===this.props.rw.user;
 		
-		let temp = this.props.rw.votes[this.props.user.uid];
-		let vote = 
-			(temp===true)? 1 : 
-			(temp===false)? -1 : 0;
+		let canVote = !!this.props.user;
+
+		let vote = 0;
+		if (canVote && this.props.rw.votes[this.props.user.uid] === true) {
+			vote = 1;
+		}
+		else if (canVote && this.props.rw.votes[this.props.user.uid] === false){
+			vote = -1;
+		}
+
+		let canDelete = canVote && this.props.user.uid===this.props.rw.user;
+
 		return (
 		  <div>
 		  	<div className='headlinebar'>
