@@ -4,6 +4,7 @@ import gotPostsAction from './actions/gotPostsAction';
 import ItemList from './ItemList';
 import sortHeadlines from './util/sortHeadlines';
 import {Link} from 'react-router-dom';
+import './Newspaper.css';
 
 class NewsHome extends React.Component {
 	constructor(props) {
@@ -61,7 +62,6 @@ class NewsHome extends React.Component {
 		);
 	}
 }
-
 let mstp = state => {
 	return {
 		firebase:state.firebase,
@@ -71,3 +71,4 @@ let mdtp = dispatch => ({
 	gotPosts: (posts) => {dispatch(gotPostsAction(posts));}
 })
 export default connect(mstp, mdtp)(NewsHome);
+

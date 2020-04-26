@@ -31,7 +31,7 @@ function TopBar(props) {
 							<Link to={'/news'}>
 								<button className="btn btn-primary">News</button>
 							</Link>
-							{ false &&
+							{ true &&
 							<Link to={'/newspaper'}>
 								<button className="btn btn-primary">The Paper</button>
 							</Link>
