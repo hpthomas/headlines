@@ -1,10 +1,12 @@
 /* below is ALL from https://codepen.io/Kseso/pen/OjprYz */
 
 /*this doesnt seemto be what breaks it */
-* {margin:0;padding:0;border:0 none; position: relative;}
+figure {margin:0;padding:0;border:0 none; position: relative;}
+figure * {margin:0;padding:0;border:0 none; position: relative;}
+
 *,*:before,*:after {box-sizing:inherit;}
 html {
-	box-sizing:bor<p></p>der-box;
+	box-sizing:border-box;
 }
 @media only screen and (min-width: 800px) {
 .last-posts {
@@ -102,7 +104,7 @@ figure img {
 	}
 	figure a h2 {
 		margin: auto;
-	font-size: inherit;
+		font-size: inherit;
 		padding: 1rem 1rem 1rem .5rem;
 		text-align: right;
 		line-height: 1.2;
