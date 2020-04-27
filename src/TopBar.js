@@ -5,7 +5,6 @@ import Login from './Login';
 import Signup from './Signup';
 import {connect} from 'react-redux';
 import NewsHome from './NewsHome';
-import Newspaper from './Newspaper';
 import Category from './Category';
 import UserPage from './UserPage';
 import NewPost from './NewPost';
@@ -31,11 +30,6 @@ function TopBar(props) {
 							<Link to={'/news'}>
 								<button className="btn btn-primary">News</button>
 							</Link>
-							{ true &&
-							<Link to={'/newspaper'}>
-								<button className="btn btn-primary">The Paper</button>
-							</Link>
-							}
 						</li>
 						{ props.user? 
 							<li>
@@ -68,7 +62,6 @@ function TopBar(props) {
 				</nav>
 				<Route exact path='/' component = {Landing} />
 				<Route path='/news' component = {NewsHome} />
-				<Route path='/newspaper' component = {Newspaper} />
 				<Route path='/login' component = {Login} />
 				<Route path='/signup' component = {Signup} />
 				<Route path='/detail/:postID' component = {Detail} />

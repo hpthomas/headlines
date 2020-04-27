@@ -1,10 +1,12 @@
-/* below is ALL from https://codepen.io/Kseso/pen/OjprYz */
+/* below is ALL from https://codepen.io/Kseso/pen/OjprYz 
+full credit to the authors, MIT license etc TODO write this correctly*/
 
-/*this doesnt seemto be what breaks it */
 figure {margin:0;padding:0;border:0 none; position: relative;}
 figure * {margin:0;padding:0;border:0 none; position: relative;}
 
+/* limit this to figure too? what does it do? */
 *,*:before,*:after {box-sizing:inherit;}
+
 html {
 	box-sizing:border-box;
 }
@@ -57,7 +59,7 @@ figure img {
 	min-height: 100%;
 	max-height: 100%;
 	width: auto;
-	heigth: auto;
+	height: auto;
 	object-fit: cover;
 	position: absolute;
 	top: 50%; left: 50%;
@@ -67,11 +69,49 @@ figure img {
 	transition: 1.5s;
 	z-index: -1;
 }
-	figure a:hover + img {
+	figure div:hover + img {
 		filter: invert(1);
 	}
-	figure a {
-		display: flex;
+	 div.blocker{
+		position:fixed;
+	    z-index: 1002;
+	    top: 0;
+	    left: 0;
+	    bottom:0;
+	    right:0;
+	    opacity:0.8;
+	    background-color:#fff;
+	}
+	 div.big {
+		position:fixed;
+	    z-index: 1003;
+	    display: block;
+	    background-color:rgba(74,98,116,.7);
+	    width: 50%;
+	    top: 15%;
+	    left: 25%;
+		font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+		color: #fff;
+    grid-row-start: span 3;
+    grid-column-start: span 3;
+		outline: 5px solid #932e26;
+		outline-offset: 5px;
+	}
+	div.big h2 {
+		margin: auto;
+		font-size: calc(1rem + .5vmax + 1vmin);
+		font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+		padding: 1rem 1rem 1rem .5rem;
+		text-align: right;
+		line-height: 1.2;
+		color:#fff;
+	}
+	div.big h2 a {
+		font-size: inherit;
+		color:inherit;
+	}
+	figure div {
+		cursor:pointer;
 		width: 100%;
 		height: 100%;
 		color: #fff;
@@ -85,10 +125,9 @@ figure img {
 			 1px 1px 0 #000;
 		overflow: hidden;
 	}
-	figure a:hover {
-		color: #f7e371;
+	figure div:hover {
 	}
-	figure a::before {
+	figure div::before {
 		background: linear-gradient(-45deg, rgba(147,46,38,.9) 50%, rgba(74,98,116,.7) 50%);
 		content:'';
 		position: absolute;
@@ -96,17 +135,31 @@ figure img {
 		width: 200%;
 		left: 0;
 		top: 0;
-		transition: .5s;
+		transition: .2s;
 	}
-	figure a:hover::before {
+	figure div:hover::before {
 		left: -100%;
 		top: -100%;
 	}
-	figure a h2 {
+	figure div h2 {
 		margin: auto;
 		font-size: inherit;
+		font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
 		padding: 1rem 1rem 1rem .5rem;
 		text-align: right;
+		line-height: 1.2;
+	}
+	figure div h2 a {
+		font-size: inherit;
+		color: inherit;
+		text-decoration: none;	
+	}
+	figure div h3 {
+		margin: auto;
+		font-size: 50%;
+		font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+		padding: 1rem 1rem 1rem .5rem;
+		text-align: center;
 		line-height: 1.2;
 	}
 	figure img {
@@ -114,7 +167,12 @@ figure img {
 		transition: .5s;
 	}
 }
-
+.code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  text-align:left;
+  display:block;
+  float:left;
+}
 
 
 

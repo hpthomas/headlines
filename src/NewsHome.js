@@ -4,6 +4,8 @@ import gotPostsAction from './actions/gotPostsAction';
 import ItemList from './ItemList';
 import sortHeadlines from './util/sortHeadlines';
 import {Link} from 'react-router-dom';
+import NewspaperItem from './NewspaperItem';
+import uuid from 'uuid';
 import './Newspaper.css';
 
 class NewsHome extends React.Component {
@@ -11,7 +13,7 @@ class NewsHome extends React.Component {
 		super(props);
 		// 'stories' is array of keys, ordered
 		// submissions is key:subs
-		this.state = {submissions:null}
+		this.state = {submissions:null, paperView:true}
 	}
 	// we use DidMount for initial API call
 	componentDidMount() {
@@ -51,17 +53,37 @@ class NewsHome extends React.Component {
 		});
 	}
 
+	togglePaperView(){
+		this.setState({paperView:!this.state.paperView});
+	}
+
 	render() {
-		return  (
-			<div>
-				<h2>News Articles</h2>
-		        {this.props.firebase.auth.currentUser? <p><Link to='/new'>Submit Article  </Link></p> : null }
-		        {this.props.firebase.auth.currentUser? <p><Link to='/admin'>Admin Panel</Link></p> : null }
-				<ItemList items={this.props.posts} />
-			</div>
-		);
+		if (!this.state.paperView) {
+			return  (
+				<div>
+					<h2>News Articles</h2>
+		    		<button type='button' onClick={this.togglePaperView.bind(this)}>Show Newspaper View</button>
+			        {this.props.firebase.auth.currentUser? <p><Link to='/new'>Submit Article  </Link></p> : null }
+			        {this.props.firebase.auth.currentUser? <p><Link to='/admin'>Admin Panel</Link></p> : null }
+					<ItemList items={this.props.posts} />
+				</div>
+			);
+		}
+		else {
+			return  (
+				<div className='newsPaper'>
+					<h2>News Articles</h2>
+		    		<button type='button' onClick={this.togglePaperView.bind(this)}>Show Editor View</button>
+					 <section className='last-posts'>
+					{this.props.posts.map(post=><NewspaperItem post={post} key={uuid.v4()}/>)}
+					 </section>
+				</div>
+			);
+		}
 	}
 }
+
+
 let mstp = state => {
 	return {
 		firebase:state.firebase,
