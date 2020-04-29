@@ -10,10 +10,10 @@ figure * {margin:0;padding:0;border:0 none; position: relative;}
 html {
 	box-sizing:border-box;
 }
-@media only screen and (min-width: 800px) {
 .last-posts {
-	display: grid;
-	grid-template-columns: repeat(auto-fill,minmax(calc(8rem + 5vw + 5vh),1fr));
+	display:  grid;
+	/* auto-fit collapses empty tracks */
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	grid-gap: calc(1rem + 2.5vmin);
  	grid-auto-flow: dense;
 	padding: calc(1rem + 2.5vmin);
@@ -23,10 +23,9 @@ html {
 		transition: .5s;
 		font-size: calc(1rem + .5vmax + 1vmin);
 		overflow: hidden;
+
 	}
 	figure:hover {
-		outline: 15px solid #fff!important;
-		outline-offset: -40px!important;
 	}
 figure:first-child {
     grid-row-start: span 3;
@@ -128,7 +127,7 @@ figure img {
 	figure div:hover {
 	}
 	figure div::before {
-		background: linear-gradient(-45deg, rgba(147,46,38,.9) 50%, rgba(74,98,116,.7) 50%);
+		background: linear-gradient(-45deg, rgba(54,78,96,.7) 50%, rgba(74,98,116,.7) 50%);
 		content:'';
 		position: absolute;
 		height: 200%;
@@ -166,7 +165,6 @@ figure img {
 		transform-origin: center center;
 		transition: .5s;
 	}
-}
 .code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
   text-align:left;

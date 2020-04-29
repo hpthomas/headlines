@@ -27,21 +27,22 @@ class NewspaperItem extends React.Component {
 		this.setState({big:!this.state.big});
 	}
 	render() {
+		let num_headlines = this.props.post.headlines.length;
+		let best = null;
+		let remaining = null;
+		if (num_headlines>0){
+			best = this.props.post.headlines[0];
+			remaining = this.props.post.headlines.slice(1);
+		}
 		if (this.state.big) {
-			let num_headlines = this.props.post.headlines.length;
-			let best = null;
-			let remaining = null;
-			if (num_headlines>0){
-				best = this.props.post.headlines[0];
-				remaining = this.props.post.headlines.slice(1);
-			}
 			return (
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
 			        <div className="big" onClick={this.click.bind(this)}>
 				 		<h2> 
 				 			<span className="code">original:</span>
-				 			<Link to={'/detail/' + this.props.post.postID}> {this.props.post.title} </Link>
+				 			{false && <Link to={'/detail/' + this.props.post.postID}> {this.props.post.title} </Link> }
+				 			{this.props.post.title}
 				 		</h2>
 				 		{best?
 					 		<h2>
@@ -65,7 +66,7 @@ class NewspaperItem extends React.Component {
 			 	<figure onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
 			        <div onClick={this.click.bind(this)}>
 				 		<h2> 
-				 			{this.props.post.title}
+				 			{best ? best.headline : this.props.post.title}
 				 		</h2>
 				 	</div>
 			 	</figure>);
@@ -75,7 +76,7 @@ class NewspaperItem extends React.Component {
 			 	<figure onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
 			        <div onClick={this.click.bind(this)}>
 				 		<h2> 
-				 			{this.props.post.title}
+				 			{best ? best.headline : this.props.post.title}
 				 		</h2>
 				 	</div>
 			 	</figure>);
