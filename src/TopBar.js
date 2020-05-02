@@ -17,28 +17,6 @@ function TopBar(props) {
 		props.firebase.logOut();
 		props.doLogout();
 	};
-	let sotop=(
-<div className="navigation">
-    <div className="name">Logo</div>
-      <div className="menu-list">
-       {/*-- Center Nav --*/}
-        <ul className="navbar-center">
-          <li><a href="">Sneakers</a></li>
-          <li><a href="">Apparel</a></li>
-          <li><a href="">Ack</a></li>
-          <li><a href="">Events</a></li>
-          <li><a href="">Contact</a></li>
-    </ul>
-  </div>
-
-  <div className="menu-list-right">
-    <ul className="navbar-right">
-       {/*-- Right Nav --*/}
-      <li><a href="">Search</a></li>
-      <li><a href="">Bag</a></li>
-  </ul>
-  </div>
-</div>);
 	return (
 			<div className="top">
 				<div className="navigation">

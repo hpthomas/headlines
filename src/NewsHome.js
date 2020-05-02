@@ -5,7 +5,6 @@ import ItemList from './ItemList';
 import sortHeadlines from './util/sortHeadlines';
 import {Link} from 'react-router-dom';
 import NewspaperItem from './NewspaperItem';
-import NewNewspaperItem from './NewNewspaperItem';
 import uuid from 'uuid';
 import './Newspaper.css';
 
@@ -60,19 +59,6 @@ class NewsHome extends React.Component {
 
 	render() {
 		if (!this.state.paperView) {
-			return (
-				<div className='newsPaper'>
-			        {this.props.firebase.auth.currentUser? <p><Link to='/admin'>Admin Panel</Link></p> : null }
-					<h2>News Articles</h2>
-		    		<button type='button' onClick={this.togglePaperView.bind(this)}>Show Old View</button>
-					 <div className='page'>
-					 	<div className='archive'>
-							{this.props.posts.map(post=><NewNewspaperItem post={post} key={uuid.v4()}/>)}
-					 	</div>
-					 </div>
-				</div>
-			);
-			/* GO BACK TO THIS 
 			return  (
 				<div>
 					<h2>News Articles</h2>
@@ -82,18 +68,16 @@ class NewsHome extends React.Component {
 					<ItemList items={this.props.posts} />
 				</div>
 			);
-			*/
 		}
 		else {
 			return  (
 				<div className='newsPaper'>
 					<h2>News Articles</h2>
-		    		<button type='button' onClick={this.togglePaperView.bind(this)}>Show New View</button>
-					 <section className='last-posts'>
-					{this.props.posts.map(post=><NewspaperItem post={post} key={uuid.v4()}/>)}
-					 </section>
-				</div>
-			);
+		    		<button type='button' onClick={this.togglePaperView.bind(this)}>Show ItemList</button>
+					 <div className='gridParent'>
+						{this.props.posts.map((post,index)=><NewspaperItem num={index} post={post} key={uuid.v4()}/>)}
+					 </div>
+				</div>);
 		}
 	}
 }

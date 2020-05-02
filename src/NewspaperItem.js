@@ -34,6 +34,15 @@ class NewspaperItem extends React.Component {
 			best = this.props.post.headlines[0];
 			remaining = this.props.post.headlines.slice(1);
 		}
+		let css_class = "article ";
+		if (this.props.num<5) {
+			css_class += 'article'+(this.props.num + 1);
+		}
+		else {
+			css_class += 'articleN';
+		}
+		console.log('hi');
+		console.log(this.props.num, css_class);
 		if (this.state.big) {
 			return (
 			 	<div> 
@@ -63,23 +72,19 @@ class NewspaperItem extends React.Component {
 		}	
 		else if (this.state.hovering) {
 			return (
-			 	<figure onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
-			        <div onClick={this.click.bind(this)}>
-				 		<h2> 
-				 			{best ? best.headline : this.props.post.title}
-				 		</h2>
-				 	</div>
-			 	</figure>);
+			 	<article className={css_class} onClick={this.click.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
+			 		<h2> 
+			 			{best ? best.headline : this.props.post.title}
+			 		</h2>
+			 	</article>);
 		}
 		else {
 			return (
-			 	<figure onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
-			        <div onClick={this.click.bind(this)}>
-				 		<h2> 
-				 			{best ? best.headline : this.props.post.title}
-				 		</h2>
-				 	</div>
-			 	</figure>);
+			 	<article className={css_class} onClick={this.click.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
+			 		<h2> 
+			 			{best ? best.headline : this.props.post.title}
+			 		</h2>
+			 	</article>);
 		}
 	}
 }
