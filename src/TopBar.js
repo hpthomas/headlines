@@ -17,49 +17,73 @@ function TopBar(props) {
 		props.firebase.logOut();
 		props.doLogout();
 	};
+	let sotop=(
+<div className="navigation">
+    <div className="name">Logo</div>
+      <div className="menu-list">
+       {/*-- Center Nav --*/}
+        <ul className="navbar-center">
+          <li><a href="">Sneakers</a></li>
+          <li><a href="">Apparel</a></li>
+          <li><a href="">Ack</a></li>
+          <li><a href="">Events</a></li>
+          <li><a href="">Contact</a></li>
+    </ul>
+  </div>
+
+  <div className="menu-list-right">
+    <ul className="navbar-right">
+       {/*-- Right Nav --*/}
+      <li><a href="">Search</a></li>
+      <li><a href="">Bag</a></li>
+  </ul>
+  </div>
+</div>);
 	return (
 			<div className="top">
-		        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-		        	<ul className="nav navbar-nav">
-		        		<li>
-							<Link to={'/'}>
-								<button className="btn btn-primary">Home</button>
-							</Link>
-						</li>
-						<li>
-							<Link to={'/news'}>
-								<button className="btn btn-primary">News</button>
-							</Link>
-						</li>
-						{ props.user? 
+				<div className="navigation">
+					<div className="name">
+						<Link to={'/'}>Bottom Shelf News</Link>
+					</div>
+					<div className="menu-list">
+						<ul className="navbar-center">
 							<li>
-								<Link to={'/user/' + props.uid}>
-									<button className="btn btn-primary">Profile</button>
-								</Link>
-							</li>  
-						 : 
-							<li>
-								<Link to={'/login'}>
-									<button className="btn btn-primary">Log In</button>
+								<Link to={'/news'}>
+									News
 								</Link>
 							</li>
-						}
-					</ul>
-		        	<ul className="nav navbar-nav ml-auto">
-		        		{props.user &&  <li><span className="navbar-text">{props.user.displayName || "anonymous"}</span></li>}
-		        		{ props.user? 
-			        		<li>
-								<button className="btn btn-primary float-right" onClick={logOut}>Log Out</button>
-			        		</li>
-			        	 : 
-			        		<li>
-								<Link to={'/signup'}>
-									<button className="btn btn-primary">Sign Up</button>
-								</Link>
-			        		</li>
-			        	}
-					</ul>
-				</nav>
+							{ props.user? 
+								<li>
+									<Link to={'/user/' + props.uid}>
+										Profile
+									</Link>
+								</li>  
+							 : 
+								<li>
+									<Link to={'/login'}>
+										Log In
+									</Link>
+								</li>
+							}
+						</ul>
+					</div>
+					<div className="menu-list-right">
+						<ul>
+			        		{props.user &&  <li><span className="navbar-text">{props.user.displayName || "anonymous"}</span></li>}
+			        		{ props.user? 
+				        		<li>
+									<button className="btn btn-primary float-right" onClick={logOut}>Log Out</button>
+				        		</li>
+				        	 : 
+				        		<li>
+									<Link to={'/signup'}>
+										Sign Up
+									</Link>
+				        		</li>
+				        	}
+						</ul>
+					</div>
+				</div>
 				<Route exact path='/' component = {Landing} />
 				<Route path='/news' component = {NewsHome} />
 				<Route path='/login' component = {Login} />
