@@ -1,6 +1,7 @@
 import React from 'react';
 import uuid from 'uuid';
 import {Link} from 'react-router-dom';
+import ItemDetail from './ItemDetail';
 /* 
 The core purpose of this class is to display a news article 
 in newspaper format, to a reader.
@@ -48,44 +49,31 @@ class NewspaperItem extends React.Component {
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
 			        <div className="big" onClick={this.click.bind(this)}>
-				 		<h2> 
-				 			<span className="code">original:</span>
-				 			{false && <Link to={'/detail/' + this.props.post.postID}> {this.props.post.title} </Link> }
-				 			{this.props.post.title}
-				 		</h2>
-				 		{best?
-					 		<h2>
-					 			<span className="code">best:</span>
-					 			{this.props.post.headlines[0].headline}
-					 		</h2>
-					 		:null
-					 	}
-					 	{remaining? remaining.map(hl=>(
-					 		<h2>
-					 			<span className="code">runner up:</span>
-					 			{hl.headline}
-					 		</h2>))
-					 		: null
-					 	}
+			        	<ItemDetail post={this.props.post} />
 				 	</div>
 			 	</div>);
 		}	
-		else if (this.state.hovering) {
+		/*
+		 We show more detail if hovering 
+		All detail elements are in the DOM as visibility:hidden otherwise, 
+		so the grid container is fixed size.
+
+		TODO: Mobile tap should show this, second tap = desktop click 
+		TODO: Just set hide variable and remove if */
+		let hide = !this.state.hovering? "hide" : "";
 			return (
 			 	<article className={css_class} onClick={this.click.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
 			 		<h2> 
-			 			{best ? best.headline : this.props.post.title}
+			 			{best ? best.headline : "?"}
 			 		</h2>
+			 		<h3 className="article_below">
+			 			{best?<Link to={'/user/'+best.user}>{best.username}</Link>:"no submissions"}
+			 		</h3>
+		 			<h3 className={"article_below " + hide} >
+		 				<span className="code">original:</span>
+		 				{this.props.post.title}
+		 			</h3>
 			 	</article>);
-		}
-		else {
-			return (
-			 	<article className={css_class} onClick={this.click.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
-			 		<h2> 
-			 			{best ? best.headline : this.props.post.title}
-			 		</h2>
-			 	</article>);
-		}
 	}
 }
 

@@ -13,7 +13,7 @@ class NewsHome extends React.Component {
 		super(props);
 		// 'stories' is array of keys, ordered
 		// submissions is key:subs
-		this.state = {submissions:null, paperView:false}
+		this.state = {submissions:null, paperView:true}
 	}
 	// we use DidMount for initial API call
 	componentDidMount() {
@@ -61,7 +61,6 @@ class NewsHome extends React.Component {
 		if (!this.state.paperView) {
 			return  (
 				<div>
-					<h2>News Articles</h2>
 		    		<button type='button' onClick={this.togglePaperView.bind(this)}>Show Newspaper View</button>
 			        {this.props.firebase.auth.currentUser? <p><Link to='/new'>Submit Article  </Link></p> : null }
 			        {this.props.firebase.auth.currentUser? <p><Link to='/admin'>Admin Panel</Link></p> : null }
@@ -72,7 +71,6 @@ class NewsHome extends React.Component {
 		else {
 			return  (
 				<div className='newsPaper'>
-					<h2>News Articles</h2>
 		    		<button type='button' onClick={this.togglePaperView.bind(this)}>Show ItemList</button>
 					 <div className='gridParent'>
 						{this.props.posts.map((post,index)=><NewspaperItem num={index} post={post} key={uuid.v4()}/>)}

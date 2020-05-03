@@ -1,11 +1,3 @@
-/*PAGE STUFF */
-.newspaper {
-  background: #001628;
-  color: #777;
-  padding: 4em;
-  font-family: sans-serif;
-  line-height: 1.15;
-}
 body {
   margin: 0;
 }
@@ -23,55 +15,74 @@ body {
   grid-gap: 1em;
 }
 
+
+.article {
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  justify-content:center;
+  font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+  padding: 1em;
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.1),
+    0 20px 20px rgba(0, 0, 0, 0.05);
+}
+/* remove box-shadow unless hovering? goofy  
+.article:hover {
+  box-shadow:
+    0 5px 10px rgba(0, 0, 0, 0.1),
+    0 20px 20px rgba(0, 0, 0, 0.05);
+}
+ */
 .article1 {
- font-size: calc(1rem + 2vmax + 1vmin); /*BIG*/
+ font-size: calc(.5rem + 1.5vmax + 1vmin); /*BIG*/
  grid-column-start:1; 
  grid-column-end:3; 
  grid-row-start:1;
  grid-row-end:2;
 }
 .article2{
- font-size: calc(.9rem + .6vmax + .6vmin); /*MEDIUM*/
+ font-size: calc(.4rem + .6vmax + .6vmin); /*MEDIUM*/
  grid-column-start:1; 
  grid-column-end:2; 
  grid-row-start:2;
  grid-row-end:4;
 }
 .article3{
- font-size: calc(.9rem + .6vmax + .6vmin); /*MEDIUM*/
+ font-size: calc(.4rem + .6vmax + .6vmin); /*MEDIUM*/
  grid-column-start:2; 
  grid-column-end:3; 
  grid-row-start:2;
  grid-row-end:3;
 }
 .article4{
- font-size: calc( .9rem + .6vmax + .6vmin); /*MEDIUM*/
+ font-size: calc( .4rem + .6vmax + .6vmin); /*MEDIUM*/
  grid-column-start:2; 
  grid-column-end:3; 
  grid-row-start:3;
  grid-row-end:4;
 }
 .article5{
- font-size: calc(.8rem + .6vmax + .6vmin); /*SMALL*/
+ font-size: calc(.3rem + .6vmax + .6vmin); /*SMALL*/
 
+}
+@media only screen and (max-width : 568px) {
+	.gridParent {
+		width:85%;
+		margin-left:35px;
+		display: grid;
+		grid-template-columns: 100%;
+		grid-gap: 1em;
+	}
+	.article {
+		grid-column-start:auto;
+		grid-column-end:auto;
+		grid-row-start:auto;
+		grid-row-end:auto;
+	}
 }
 .articleN{
- font-size: calc(.8rem + .6vmax + .6vmin); /*SMALL*/
-
-}
-
-.article {
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
-  padding: 1em;
-  background: #fff;
-  box-shadow:
-    0 5px 10px rgba(0, 0, 0, 0.1),
-    0 20px 20px rgba(0, 0, 0, 0.05);
-  
-  
+ font-size: calc(.3rem + .6vmax + .6vmin); /*SMALL*/
 }
 .code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -80,43 +91,60 @@ body {
   float:left;
 
 }
-	 div.blocker{
-		position:fixed;
-	    z-index: 1002;
-	    top: 0;
-	    left: 0;
-	    bottom:0;
-	    right:0;
-	    opacity:0.8;
-	    background-color:#fff;
-	}
-	 div.big {
-		position:fixed;
-	    z-index: 1003;
-	    display: block;
-	    background-color:#444;
-	    width: 50%;
-	    top: 15%;
-	    left: 25%;
-		font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
-		color: #fff;
-    grid-row-start: span 3;
-    grid-column-start: span 3;
-		outline: 5px solid #932e26;
-		outline-offset: 5px;
-	}
-	div.big h2 {
-		margin: auto;
-		font-size: calc(1rem + .5vmax + 1vmin);
-		font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
-		padding: 1rem 1rem 1rem .5rem;
-		text-align: right;
-		line-height: 1.2;
-		color:#fff;
-	}
-	div.big h2 a {
-		font-size: inherit;
-		color:inherit;
-	}
+.hide {
+	 font-size: calc(.3rem + .8vmax + .8vmin); /*LITTLE*/
+	 align-self: flex-end;
+	 visibility:hidden;
+}
+.article_below {
+	 font-size: calc(.3rem + .8vmax + .8vmin); /*LITTLE*/
+	 align-self: flex-end;
+	 margin-top:5px;
+	 margin-bottom:0;
+	 margin-right:0;
+	 margin-left:0;
+}
+.article_above{
+	 font-size: calc(.3rem + .8vmax + .8vmin); /*LITTLE*/
+	 align-self: flex-start;
+	 margin:0;
+}
+.article h2{
+	margin:0;
+}
+div.blocker{
+position:fixed;
+z-index: 1002;
+top: 0;
+left: 0;
+bottom:0;
+right:0;
+opacity:0.9;
+background-color:#999;
+}
+div.big {
+background-color: #f9f7f1;
+position:fixed;
+z-index: 1003;
+display: block;
+width: 50%;
+top: 15%;
+left: 25%;
+font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+		outline: 5px solid #333;
+
+}
+div.big h2 {
+margin: auto;
+font-size: calc(1rem + .5vmax + 1vmin);
+font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+padding: 1rem 1rem 1rem .5rem;
+text-align: right;
+line-height: 1.2;
+}
+div.big h2 a {
+font-size: inherit;
+color:inherit;
+}
 
 

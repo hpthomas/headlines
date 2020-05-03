@@ -75,8 +75,9 @@ body {
 /* END SO CODE*/
 
  body {
-  background-color: #ddd !important; /*webpack replaces this otherwise - why?? */
+  background-color: #f9f7f1;
   width: 100vw;
+  color:#333;
 }
 .top {
     font-family:sans-serif;
