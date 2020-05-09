@@ -159,14 +159,14 @@ class Firebase {
 		return stories;
 	}
 
-	//TODO IMPORTANT: When you update this to use num, no num arg = all subs
+	//TODO IMPORTANT: When updated to use num, no num arg = all subs
 	getSubmissionsForPost(postID, num) {
 		return this.db.ref('storysubmissions/' + postID).once('value');
 	}
 
 	getSubmissionsByUser = (uid) => {
 		// Get a list of {postID:subID} for all user submissions
-		return this.db.ref('users/' + uid).once('value');
+		return this.db.ref('users/' + uid).orderByChild('date').once('value');
 	}
 
 	getSubmissionByID = (subID) => {

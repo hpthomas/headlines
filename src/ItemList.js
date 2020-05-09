@@ -17,7 +17,7 @@ const ItemList = (props) => {
     <div>
       <ul className = 'links'>
         {props.items.map(item =>
-        <li key={uuid.v4()}>
+        <li key={uuid.v4()} >
          <Item 
             postID = {item.postID}
             category={item.category} 

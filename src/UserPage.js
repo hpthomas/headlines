@@ -27,6 +27,7 @@ class UserPage extends React.Component {
 
 			let storiesWithUserSubs = posts.stories;
 			let story_keys = Object.keys(storiesWithUserSubs);
+			story_keys.reverse();
 
 			let subPromises = story_keys.map(key => {
 				let subs = Object.keys(storiesWithUserSubs[key].submissions);

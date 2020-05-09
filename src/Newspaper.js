@@ -8,12 +8,12 @@ import NewspaperItem from './NewspaperItem';
 import uuid from 'uuid';
 import './Newspaper.css';
 
-class NewsHome extends React.Component {
+class Newspaper extends React.Component {
 	constructor(props) {
 		super(props);
 		// 'stories' is array of keys, ordered
 		// submissions is key:subs
-		this.state = {submissions:null, paperView:true}
+		this.state = {submissions:null}
 	}
 	// we use DidMount for initial API call
 	componentDidMount() {
@@ -53,18 +53,13 @@ class NewsHome extends React.Component {
 		});
 	}
 
-	togglePaperView(){
-		this.setState({paperView:!this.state.paperView});
-	}
-
 	render() {
 		return  (
-			<div>
-		        {this.props.firebase.auth.currentUser? <p><Link to='/new'>Submit Article  </Link></p> : null }
-		        {this.props.firebase.auth.currentUser? <p><Link to='/admin'>Admin Panel</Link></p> : null }
-				<ItemList items={this.props.posts} />
-			</div>
-		);
+			<div className='newsPaper'>
+				 <div className='gridParent'>
+					{this.props.posts.map((post,index)=><NewspaperItem num={index} post={post} key={uuid.v4()}/>)}
+				 </div>
+			</div>);
 	}
 }
 
@@ -77,5 +72,5 @@ let mstp = state => {
 let mdtp = dispatch => ({
 	gotPosts: (posts) => {dispatch(gotPostsAction(posts));}
 })
-export default connect(mstp, mdtp)(NewsHome);
+export default connect(mstp, mdtp)(Newspaper);
 

@@ -5,6 +5,7 @@ import Login from './Login';
 import Signup from './Signup';
 import {connect} from 'react-redux';
 import NewsHome from './NewsHome';
+import Newspaper from './Newspaper';
 import Category from './Category';
 import UserPage from './UserPage';
 import NewPost from './NewPost';
@@ -27,7 +28,12 @@ function TopBar(props) {
 						<ul className="navbar-center">
 							<li>
 								<Link to={'/news'}>
-									News
+									Home	
+								</Link>
+							</li>
+							<li>
+								<Link to={'/newspaper'}>
+									Top News	
 								</Link>
 							</li>
 							{ props.user? 
@@ -64,6 +70,7 @@ function TopBar(props) {
 				</div>
 				<Route exact path='/' component = {Landing} />
 				<Route path='/news' component = {NewsHome} />
+				<Route path='/newspaper' component = {Newspaper} />
 				<Route path='/login' component = {Login} />
 				<Route path='/signup' component = {Signup} />
 				<Route path='/detail/:postID' component = {Detail} />

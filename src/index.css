@@ -115,28 +115,6 @@ button.vote-button.voted {
 .news-item {
   width: 60%;
 }
-.original-title {
-  font-size: 1.5em;
-}
-.best-rewrite {
-  font-size: 1.2em;
-
-}
-.other-rewrite {
-  font-size: 1em;
-}
-.links > li {
-  margin-left: 20vw;
-  margin-bottom: 3em;
-}
-.links .article-title a{
-  font-size: 1.8em;
-}
-.links .article-info li {
-  display: inline-block;
-  margin-top: 0.3em;
-  margin-left: 2em;
-}
 .start-new-post, .start-new-post:hover, .start-new-post:focus {
   font-size: 1.5em;
   margin-left: 15vw;
@@ -229,4 +207,7 @@ button.vote-button.voted {
 .tweetpreview p {
   margin-top:2px;
   margin-bottom:2px;
+}
+.links {
+  max-width:70%;
 }

@@ -131,14 +131,12 @@ background-color:#999;
 }
 
 div.big {
-background-color: #f9f7f1;
 position:fixed;
 z-index: 1003;
 width: 65%;
 top: 15%;
 left: 17%;
 font-family: timesnewroman, "times new roman", times, baskerville, georgia, serif;
-    outline: 5px solid #333;
 
 }
 
@@ -146,16 +144,26 @@ font-family: timesnewroman, "times new roman", times, baskerville, georgia, seri
   display:flex;
   align-items:center;
   flex-wrap:wrap;
+  text-align:left;
+  font-size: 1.3rem;
 }
 .original {
   display:flex;
   align-items:center;
   flex-wrap:wrap;
+  text-align:right;
+  font-size:1.5em;
+}
+.itembuttons {
+	margin-top:8px;
+	display:flex;
+	justify-content:center;
 }
 
 .bottomBar {
   display:flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  font-size:.8em;
 }
 .bottomBar span {
   margin-left:5px;
@@ -166,15 +174,26 @@ font-family: timesnewroman, "times new roman", times, baskerville, georgia, seri
 
 .main p{
   margin:0;
-  font-size: calc(1rem + .5vmax + 1vmin);
   font-family: timesnewroman, "times new roman", times, baskerville, georgia, serif;
   padding: 1rem 1rem .2rem .5rem;
-  text-align: right;
   line-height: 1.2;
 }
-
+.main p a{
+  text-decoration:none;
+  color:inherit;
+}
+.right a {
+	text-decoration:none;
+    font-family: source-code-pro, menlo, monaco, consolas, "courier new", monospace;
+    font-size:0.7em;
+}
 .main {
   width:80%;
+}
+.itemcontainer{
+	margin-bottom:35px;
+background-color: #f9f7f1;
+    outline: 2px solid #333;
 }
 
 

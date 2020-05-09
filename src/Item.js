@@ -53,10 +53,12 @@ class Item extends React.Component {
   }
   render() {
     return (
-        <div>
+        <div className="itemcontainer">
         <section className="original">
           <div className="main">
-            <p>{this.props.orTitle}</p>
+            <p>
+              <Link to={'/detail/' + this.props.postID}> {this.props.orTitle} </Link>
+            </p>
           </div>
           <div className="right">
             <a href={this.props.url}>AP News &#8599;</a>
@@ -73,12 +75,13 @@ class Item extends React.Component {
               delete={this.deleteSubmission.bind(this)}
             />
           )  }
-        
+        <section className="itembuttons"> 
         {this.props.user && 
           <NewSubmission submit={this.submit.bind(this)}/>  }
 
         {this.props.user && this.props.user.admin && 
           <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
+        </section> 
       </div>
      );
   }
