@@ -10,27 +10,44 @@ class ItemDetail extends React.Component {
 			remaining = this.props.post.headlines.slice(1);
 		}
 		return (<div>
-	 		<h2> 
-	 			<Link to={'/detail/' + this.props.post.postID}> 
-		 			<span className="code">original:</span>
-	 			</Link>
-	 			{this.props.post.title}
-	 		</h2>
-	 		{best?
-		 		<h2>
-		 			<span className="code">best:</span>
-		 			{this.props.post.headlines[0].headline}
-		 		</h2>
-		 		:null
-		 	}
-		 	{remaining? remaining.map(hl=>(
-		 		<h2>
-		 			<span className="code">runner up:</span>
-		 			{hl.headline}
-		 		</h2>))
-		 		: null
-		 	}
+			<section className="original">
+				<div className="main">
+					<p>{this.props.post.title}</p>
+				</div>
+				<div className="right">
+					<a href={this.props.post.url}>AP News &#8599;</a>
+				</div>
+			</section>
+			{this.props.post.headlines? 
+				this.props.post.headlines.map(hl=><Submission headline={hl} />)
+				: null}
 		 </div>);
 	}
 }
+let Submission = (props) => (
+<section className="submission">
+	<div className="main">
+		<p>{props.headline.headline}</p>
+		<div className="bottomBar">
+			<span>
+		  		<Link to={'/user/'+props.headline.user}>{props.headline.username}</Link>
+			</span>
+			<span>
+				&#8226;
+			</span>
+			<span>
+				{props.headline.score + " points"}
+			</span>
+			<span>
+				&#8226;
+			</span>
+			<span>
+				<button className='vote-button'>+</button>
+				<button className='vote-button'>-</button>
+			</span>
+		</div>
+	</div>
+	<div className="right">
+	</div>
+</section>);
 export default ItemDetail;

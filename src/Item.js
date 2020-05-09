@@ -75,7 +75,6 @@ class Item extends React.Component {
 
         {this.props.user && this.props.user.admin && 
           <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
-
       </li>
      );
   }
