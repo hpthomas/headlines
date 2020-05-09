@@ -1,7 +1,6 @@
 import React from 'react';
-import uuid from 'uuid';
 import {Link} from 'react-router-dom';
-import ItemDetail from './ItemDetail';
+import Item from './Item';
 /* 
 The core purpose of this class is to display a news article 
 in newspaper format, to a reader.
@@ -49,7 +48,15 @@ class NewspaperItem extends React.Component {
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
 			        <div className="big" onClick={this.click.bind(this)}>
-			        	<ItemDetail post={this.props.post} />
+				         <Item 
+				            postID = {this.props.post.postID}
+				            category={this.props.post.category} 
+				            orTitle={this.props.post.title} 
+				            timestamp={this.props.post.timestamp}
+				            headlines={this.props.post.headlines}
+				            show={4}
+				            url={this.props.post.url} 
+				         />
 				 	</div>
 			 	</div>);
 		}	

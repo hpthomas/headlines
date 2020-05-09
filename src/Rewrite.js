@@ -1,4 +1,5 @@
 import React from 'react';
+import {Fragment} from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 class Rewrite extends React.Component {
@@ -17,27 +18,42 @@ class Rewrite extends React.Component {
 		let canDelete = canVote && this.props.user.uid===this.props.rw.user;
 
 		return (
-		  <div>
-		  	<div className='headlinebar'>
-			    <span>{"("+this.props.rw.score+")  "}</span>
-			    <span>{this.props.rw.headline}</span>
-			</div>
-		  	<div className='headlineinfo'>
-		  		<Link to={'/user/'+this.props.rw.user}>{this.props.rw.username}</Link>
-			    {canVote &&
-		    		<span style={{marginLeft:'4px'}} >
-		    			<span>Vote!</span>
-		    			{this.buttons(vote)}
-			    	</span>
-			    }
-			    {canDelete && 
-		    		<span style={{marginLeft:'4px'}} >
-		    			<button type='button' onClick={this.delete.bind(this)}>delete</button>
-			    	</span>
-			    }
-			</div>
-		</div>
-		);
+			<section className="submission">
+				<div className="main">
+					<p>{this.props.rw.headline}</p>
+					<div className="bottomBar">
+						<span>
+					  		<Link to={'/user/'+this.props.rw.user}>{this.props.rw.username}</Link>
+						</span>
+						<span>
+							&#8226;
+						</span>
+						<span>
+							{this.props.rw.score + " points"}
+						</span>
+					    {canVote &&
+					    	<Fragment>
+								<span>
+									&#8226;
+								</span>
+								<span>
+									{this.buttons(vote)}
+								</span>
+							</Fragment>
+					    }
+					    {canDelete &&
+					    	<Fragment>
+								<span>
+									&#8226;
+								</span>
+								<span>
+					    			<button type='button' onClick={this.delete.bind(this)}>delete</button>
+								</span>
+					    	</Fragment>
+					    }
+					</div>
+				</div>
+			</section>);
 	}
 	delete() {
 		this.props.firebase.deleteSubmission(this.props.postID, this.props.rw.key, this.props.rw.user)

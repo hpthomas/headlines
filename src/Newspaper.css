@@ -142,7 +142,12 @@ font-family: timesnewroman, "times new roman", times, baskerville, georgia, seri
 
 }
 
-div.big section {
+.submission {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.original {
   display:flex;
   align-items:center;
   flex-wrap:wrap;

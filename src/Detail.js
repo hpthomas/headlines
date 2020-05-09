@@ -33,8 +33,7 @@ class Detail extends React.Component {
 	render() {
 		if (!this.state.item) return <div>hi</div>;
 		let item = this.state.item;
-		return <ul>
-			<Item 
+		return (<Item 
             postID = {this.props.match.params.postID}
             category={item.category} 
             orTitle={item.title} 
@@ -42,8 +41,7 @@ class Detail extends React.Component {
             headlines={item.headlines}
             show={100}
             url={item.url} 
-	        />
-	     </ul>;
+	        />);
 	}
 }
 let mstp = state => {

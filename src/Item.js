@@ -53,11 +53,15 @@ class Item extends React.Component {
   }
   render() {
     return (
-      <li className='news-item'>
-
-        <p>
-          <Link to={'/detail/' + this.props.postID} className='original-title' >{this.props.orTitle}</Link>
-        </p>
+        <div>
+        <section className="original">
+          <div className="main">
+            <p>{this.props.orTitle}</p>
+          </div>
+          <div className="right">
+            <a href={this.props.url}>AP News &#8599;</a>
+          </div>
+        </section>
 
         {this.state.headlines.map(headline =>
             <Rewrite
@@ -75,7 +79,7 @@ class Item extends React.Component {
 
         {this.props.user && this.props.user.admin && 
           <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
-      </li>
+      </div>
      );
   }
 }

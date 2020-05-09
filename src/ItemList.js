@@ -17,8 +17,8 @@ const ItemList = (props) => {
     <div>
       <ul className = 'links'>
         {props.items.map(item =>
+        <li key={uuid.v4()}>
          <Item 
-            key={uuid.v4()} 
             postID = {item.postID}
             category={item.category} 
             orTitle={item.title} 
@@ -27,6 +27,7 @@ const ItemList = (props) => {
             show={props.show?props.show:4}
             url={item.url} 
          />
+        </li>
         )}
       </ul>
     </div>
