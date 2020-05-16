@@ -5,7 +5,7 @@ import uuid from 'uuid';
 class AdminVerifyStory extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {url:props.guess_url,title:props.guess_text};
+		this.state = {url:props.guess_url,title:props.guess_text, source_name:props.source_name || "AP News"};
 	}
 
 
@@ -29,9 +29,15 @@ class AdminVerifyStory extends React.Component {
               	className='adminPanel' 
               	name='title'/>
               <textarea 
+                spellCheck={false}
+                className='adminPanel' 
+                value={this.state.url} 
+                onChange={this.change.bind(this)} 
+                name='url' />
+              <textarea 
               	spellCheck={false}
               	className='adminPanel' 
-              	value={this.state.url} 
+              	value={this.state.source_name} 
               	onChange={this.change.bind(this)} 
               	name='url' />
             </fieldset>
@@ -46,7 +52,7 @@ class AdminVerifyStory extends React.Component {
               			type="button" 
               			onClick={(ev)=>{
               				ev.preventDefault();
-              				this.props.save(category,this.state.url,this.state.title)
+              				this.props.save(category,this.state.url,this.state.title, this.state.source_name)
               			}}
 	           			>
               			{category}

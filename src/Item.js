@@ -5,13 +5,16 @@ import deleteAction from './actions/deleteAction';
 import deleteSubmissionAction from './actions/deleteSubmissionAction';
 import editAction from './actions/editAction';
 import Rewrite from './Rewrite';
+import dateFormat from './util/dateFormat';
 import {withRouter} from 'react-router-dom';
 import uuid from 'uuid';
+
 
 
 class Item extends React.Component {
   constructor(props) {
     super(props);
+    window.p=props.post;
     this.state = {headlines:this.props.headlines.slice(0,this.props.show)};
   }
 
@@ -54,6 +57,7 @@ class Item extends React.Component {
   render() {
     return (
         <div className="itemcontainer">
+        <span className="date_above">{dateFormat(new Date(this.props.timestamp))}</span>
         <section className="original">
           <div className="main">
             <p>
@@ -61,7 +65,7 @@ class Item extends React.Component {
             </p>
           </div>
           <div className="right">
-            <a href={this.props.url}>AP News &#8599;</a>
+            <a href={this.props.url}>{this.props.source || "unknown"} &#8599;</a>
           </div>
         </section>
 

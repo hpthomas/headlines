@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import gotPostsAction from './actions/gotPostsAction';
 import ItemList from './ItemList';
 import sortHeadlines from './util/sortHeadlines';
+import sortStories from './util/sortStories';
 import {Link} from 'react-router-dom';
 import NewspaperItem from './NewspaperItem';
 import uuid from 'uuid';
@@ -25,6 +26,7 @@ class NewsHome extends React.Component {
 			if (!postsObject) return;
 			stories = postsObject;
 			keys = Object.keys(postsObject);
+			keys.reverse();
 			let subs = keys.map(k=>this.props.firebase.getSubmissionsForPost(k));
 			return Promise.all(subs);
 		})
@@ -45,6 +47,7 @@ class NewsHome extends React.Component {
 				}
 				return s;
 			});
+			posts = sortStories(posts);	
 			this.props.gotPosts(posts);
 		})
 		.catch(e=>{
@@ -60,7 +63,6 @@ class NewsHome extends React.Component {
 	render() {
 		return  (
 			<div>
-		        {this.props.firebase.auth.currentUser? <p><Link to='/new'>Submit Article  </Link></p> : null }
 		        {this.props.firebase.auth.currentUser? <p><Link to='/admin'>Admin Panel</Link></p> : null }
 				<ItemList items={this.props.posts} />
 			</div>

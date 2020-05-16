@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Item from './Item';
+import dateFormat from './util/dateFormat';
 /* 
 The core purpose of this class is to display a news article 
 in newspaper format, to a reader.
@@ -27,6 +28,7 @@ class NewspaperItem extends React.Component {
 		this.setState({big:!this.state.big});
 	}
 	render() {
+		let date = dateFormat(new Date(this.props.post.timestamp));
 		let num_headlines = this.props.post.headlines.length;
 		let best = null;
 		let remaining = null;
@@ -41,19 +43,20 @@ class NewspaperItem extends React.Component {
 		else {
 			css_class += 'articleN';
 		}
-		console.log('hi');
-		console.log(this.props.num, css_class);
+		// display Item instead of NewspaperItem
 		if (this.state.big) {
+			window.post=this.props.post;
 			return (
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
-			        <div className="big" onClick={this.click.bind(this)}>
+			        <div className="big" >
 				         <Item 
 				            postID = {this.props.post.postID}
 				            category={this.props.post.category} 
 				            orTitle={this.props.post.title} 
 				            timestamp={this.props.post.timestamp}
 				            headlines={this.props.post.headlines}
+				            source={this.props.post.source}
 				            show={4}
 				            url={this.props.post.url} 
 				         />
@@ -69,17 +72,22 @@ class NewspaperItem extends React.Component {
 		TODO: Just set hide variable and remove if */
 		let hide = !this.state.hovering? "hide" : "";
 			return (
-			 	<article className={css_class} onClick={this.click.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
+			 	<article className={css_class} onClick={this.click.bind(this)} onTouchStart={this.mouseEnter.bind(this)} onTouchEnd={this.mouseLeave.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
 			 		<h2> 
 			 			{best ? best.headline : "?"}
 			 		</h2>
-			 		<h3 className="article_below">
+			 		<h3 className="article_below_medium ">
 			 			{best?<Link to={'/user/'+best.user}>{best.username}</Link>:"no submissions"}
 			 		</h3>
-		 			<h3 className={"article_below " + hide} >
-		 				<span className="code">original:</span>
+		 			<h3 className={"article_below_medium " + hide} >
+		 				<span className="code">
+		 					<a href={this.props.post.url}>{this.props.post.source }</a>:  
+		 				</span>
 		 				{this.props.post.title}
 		 			</h3>
+		 			<h4 className={"article_below_small " + hide} >
+		 				{date}
+		 			</h4>
 			 	</article>);
 	}
 }

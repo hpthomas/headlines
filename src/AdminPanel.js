@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import uuid from 'uuid';
 import AdminVerifyStory from './AdminVerifyStory';
+import NewPost from './NewPost';
 
 let Status = {NONE:"bg1",SELECTED:"bg2",REJECTED:"bg3"};
 
@@ -33,6 +34,7 @@ class AdminPanel extends React.Component {
         tweet.status=Status.NONE;
         tweet.id=uuid.v4();
       });
+      window.t=tweets;
       this.setState({tweets:tweets});
     });
   }
@@ -55,7 +57,7 @@ class AdminPanel extends React.Component {
     this.setState({tweets : tweets});
   }
 
-  save(id, cat, url, title) {
+  save(id, cat, url, title, source_name) {
 
     let tweets = this.state.tweets;
     tweets = tweets.slice(); 
@@ -64,6 +66,7 @@ class AdminPanel extends React.Component {
         t.url=url;
         t.title=title;
         t.cat=cat;
+        t.source_name=source_name;
         t.status = Status.SELECTED;
       }
     })
@@ -74,7 +77,7 @@ class AdminPanel extends React.Component {
     e.preventDefault();
     this.state.tweets.forEach(tweet => {
       if (tweet.status===Status.SELECTED) {
-        this.props.firebase.newArticle(tweet.title, tweet.url, tweet.cat, false)
+        this.props.firebase.newArticle(tweet.title, tweet.url, tweet.source_name)
         .then(res=>this.props.history.push("/news"));
       }
     });
@@ -118,6 +121,7 @@ class AdminPanel extends React.Component {
                 full={tweet.full_text} 
                 guess_url = {tweet.guess_url}
                 guess_text = {tweet.guess_text}
+                source_name={tweet.source_name}
                 status={tweet.status}
                 save={this.save.bind(this, tweet.id)} 
                 cancel = {this.cancel.bind(this, tweet.id)} 
@@ -129,7 +133,7 @@ class AdminPanel extends React.Component {
       else {
         return (
         <div>
-
+          <NewPost />
 
           <form onSubmit={this.fetchCustomTweets.bind(this)}>
             <button style={{margin:"10px"}} onClick={()=>this.props.history.push('/news')}>Cancel</button>

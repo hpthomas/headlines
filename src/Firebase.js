@@ -1,4 +1,5 @@
 import app from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/functions';
@@ -23,8 +24,7 @@ let date = () => (new Date()).toJSON().slice(0,10);
 if (process.env.NODE_ENV === 'production') {
 	date = () => "2020-01-08";
 }
-let yesterday = () => 
-	(new Date(new Date().setDate(new Date().getDate()-1))).toJSON().slice(0,10);
+let yesterday = () => (new Date(new Date().setDate(new Date().getDate()-1))).getTime();
 
 class Firebase {
 	// onAuthStateChange is a funciton called whenever a successful login/out occurs
@@ -73,7 +73,7 @@ class Firebase {
 			user.admin = token.claims.admin;
 			console.log(user);
 			return user;
-		})
+		});
 	}
 
 	logOut = ()=> {
@@ -89,17 +89,16 @@ class Firebase {
 	}
 
 	//TODO get rid of old
-	newArticle = (title,url,category, old) => {
+	newArticle = (title,url,source) => {
 		if (!this.auth.currentUser) return; //should not happen
 		let posts = this.db.ref("stories");
 		let newPost = posts.push();
-		// TODO add timestamp maybe? encoded in fb auto-generated key but cryptic
-		let d = old ? yesterday() : date();
+		let ts = firebase.database.ServerValue.TIMESTAMP;
 		return newPost.set( {
 			title:title,
 			url:url,
-			category:category,
-			date: d
+			source:source,
+			timestamp: ts
 		});
 	}
 
@@ -112,19 +111,18 @@ class Firebase {
 		let uid = this.auth.currentUser.uid;
 		let name = this.auth.currentUser.displayName;
 		let updates = {};
+		let ts = firebase.database.ServerValue.TIMESTAMP;
 
 		// Logging user's vote in 2 places: /submissions and /users 
 
 		updates['/storysubmissions/' + storyID + '/' + newHeadlineKey] =
-			{headline:headline, user:uid, username:name, votes: {[uid]:true}, key:newHeadlineKey};
+			{headline:headline, user:uid, username:name, votes: {[uid]:true}, key:newHeadlineKey, timestamp:ts};
 
-		updates['/storysubmissions/' + storyID + '/' + newHeadlineKey] =
-			{headline:headline, user:uid, username:name, votes: {[uid]:true}, key:newHeadlineKey};
 			
 		updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + newHeadlineKey ] = true;
 
 		updates['/submissions/' + newHeadlineKey] = 
-			{headline:headline, user:uid, username:name, key:newHeadlineKey, story:storyID};
+			{headline:headline, user:uid, username:name, key:newHeadlineKey, story:storyID, timestamp:ts};
 
 		this.db.ref().update(updates);
 		return newHeadlineKey;
@@ -153,8 +151,15 @@ class Firebase {
 	getTopPosts = () => {
 		/* TODO: Filter to most recent 10ish? */
 		let stories = this.db.ref('stories')
-		.orderByChild('date')
-		.equalTo(date())
+		.orderByChild('timestamp')
+		.once('value');
+		return stories;
+	}
+	getTodayPosts = () => {
+		let cutoff = yesterday();
+		let stories = this.db.ref('stories')
+		.orderByChild('timestamp')
+		.startAt(cutoff)
 		.once('value');
 		return stories;
 	}
@@ -166,7 +171,7 @@ class Firebase {
 
 	getSubmissionsByUser = (uid) => {
 		// Get a list of {postID:subID} for all user submissions
-		return this.db.ref('users/' + uid).orderByChild('date').once('value');
+		return this.db.ref('users/' + uid).orderByChild('timestamp').once('value');
 	}
 
 	getSubmissionByID = (subID) => {

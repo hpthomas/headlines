@@ -7,6 +7,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.landing {
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.faq button {
+  font-size:inherit;
+}
+.landing > h1 {
+  margin:0;
+  font-size:3rem;
+  font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;
+}
+.landing > h2 {
+  margin-top:0;
+  margin-bottom:30px;
+  font-size:1.3rem;
+}
+.landing_button {
+  cursor:pointer;
+  background-color: #444;
+  color: white;
+  padding: 1em 1.5em;
+}
 /* STACK OVERFLOW Q:47235045 CODE */
 .navigation {
     background-color: #333;
@@ -27,7 +53,11 @@ body {
     padding: 0 5px;
   text-decoration: none;
 }
-
+@media only screen and (max-width: 600px) {
+  .menu-list {
+    display:none;
+  }
+}
 .menu-list {
   flex: 3;
 }
@@ -75,7 +105,6 @@ body {
 /* END SO CODE*/
 
  body {
-  background-color: #f9f7f1;
   width: 100vw;
   color:#333;
 }
@@ -115,12 +144,6 @@ button.vote-button.voted {
 .news-item {
   width: 60%;
 }
-.start-new-post, .start-new-post:hover, .start-new-post:focus {
-  font-size: 1.5em;
-  margin-left: 15vw;
-  text-decoration: none;
-}
-
 .adminpanel {
   font-size:0.6em;
   width: 100%;
@@ -162,44 +185,6 @@ button.vote-button.voted {
   height: 2em;
 }
 
-.new-post {
-  width: 100%;
-  height: 100%;
-}
-.new-post h2{
-  width: 100%;
-  text-align: center;
-}
-.new-post .wrap {
-  margin: 1em 10vw;
-  width: 50vw;
-  background-color: #b0e0e6;
-  text-align: left;
-}
-.new-post .wrap .input-name {
-  margin: 0.5em;
-  font-size: 1.3em;
-}
-.new-post .wrap textarea {
-  margin: 0.5em;
-  width: 95%;
-  height: 2.5em;
-}
-.new-post .wrap select{
-  margin: 0.5em;
-  width: 95%;
-  height: 2em;
-}
-.new-post .byline {
-  margin-left: 10%;
-  font-size: 1em;
-}
-.new-post-buttons {
-  margin-left: 10vw;
-}
-.new-post-buttons button{
-  margin-right: 2em;
-}
 .tweetpreview {
   margin-bottom:10px;
 }
@@ -210,4 +195,9 @@ button.vote-button.voted {
 }
 .links {
   max-width:70%;
+}
+.submit_one {
+  display:flex;
+  flex-direction: column;
+  max-width:600px;
 }

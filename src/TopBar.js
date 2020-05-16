@@ -13,7 +13,6 @@ import Detail from './Detail';
 import AdminPanel from './AdminPanel';
 
 function TopBar(props) {
-	window.u=props.user;
 	let logOut = ()=>{
 		props.firebase.logOut();
 		props.doLogout();
@@ -27,44 +26,35 @@ function TopBar(props) {
 					<div className="menu-list">
 						<ul className="navbar-center">
 							<li>
-								<Link to={'/news'}>
+								<Link to={'/'}>
 									Home	
 								</Link>
 							</li>
 							<li>
 								<Link to={'/newspaper'}>
-									Top News	
+									Newspaper
 								</Link>
 							</li>
-							{ props.user? 
-								<li>
-									<Link to={'/user/' + props.uid}>
-										Profile
-									</Link>
-								</li>  
-							 : 
-								<li>
-									<Link to={'/login'}>
-										Log In
-									</Link>
-								</li>
-							}
+							<li>
+								<Link to={'/news'}>
+									Archive
+								</Link>
+							</li>
 						</ul>
 					</div>
 					<div className="menu-list-right">
 						<ul>
-			        		{props.user &&  <li><span className="navbar-text">{props.user.displayName || "anonymous"}</span></li>}
-			        		{ props.user? 
-				        		<li>
-									<button className="btn btn-primary float-right" onClick={logOut}>Log Out</button>
-				        		</li>
-				        	 : 
-				        		<li>
-									<Link to={'/signup'}>
-										Sign Up
-									</Link>
-				        		</li>
-				        	}
+							<li>
+								{props.user? 
+									<Link to={'/user/'+props.uid}>{props.user.displayName||'anonymous'}</Link>
+									:<Link to='/signup'>Register</Link>
+								}
+							</li>
+							<li>
+								{props.user? <button type='button' onClick={logOut}>log out</button>
+								: <Link to='/login'>Log In</Link>
+								}
+							</li>
 						</ul>
 					</div>
 				</div>

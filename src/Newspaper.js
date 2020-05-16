@@ -25,6 +25,7 @@ class Newspaper extends React.Component {
 			if (!postsObject) return;
 			stories = postsObject;
 			keys = Object.keys(postsObject);
+			keys.reverse();
 			let subs = keys.map(k=>this.props.firebase.getSubmissionsForPost(k));
 			return Promise.all(subs);
 		})

@@ -24,6 +24,7 @@ const ItemList = (props) => {
             orTitle={item.title} 
             timestamp={item.timestamp}
             headlines={item.headlines}
+            source={item.source}
             show={props.show?props.show:4}
             url={item.url} 
          />

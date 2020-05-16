@@ -18,7 +18,12 @@ let newish = (tweet) => {
 
 exports.topNews = functions.https.onCall((data, context) => {
 	// will be undefined for now	
-	const handle = data.handle;
+	let handle = data.handle;
+	let sources = {
+		"ap" : "AP News"
+	};
+	let source_name = sources[handle] || handle.toUpperCase();
+
 
 	if (!context.auth) {
 		return(null);
@@ -37,6 +42,7 @@ exports.topNews = functions.https.onCall((data, context) => {
 						let url = t.entities.urls[0];
 						t.guess_url = url.expanded_url;
 						t.guess_text = t.full_text.substr(0, url.indices[0]);
+						t.source_name = source_name;
 					}
 				})
 				resolve(tweets);
