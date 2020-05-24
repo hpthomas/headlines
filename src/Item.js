@@ -5,6 +5,7 @@ import deleteAction from './actions/deleteAction';
 import deleteSubmissionAction from './actions/deleteSubmissionAction';
 import editAction from './actions/editAction';
 import Rewrite from './Rewrite';
+import ArticleEditor from './ArticleEditor';
 import dateFormat from './util/dateFormat';
 import uuid from 'uuid';
 
@@ -108,14 +109,16 @@ class Item extends React.Component {
             {this.props.user &&  this.props.user.admin && !this.props.post.frozen &&
               <Freeze id={this.props.post.postID} f={this.freeze.bind(this)} /> }
             {this.props.user &&  this.props.user.admin && this.props.post.frozen &&
-              <UnFreeze id={this.props.postID} f={this.unfreeze.bind(this)} /> }
+              <UnFreeze id={this.props.post.postID} f={this.unfreeze.bind(this)} /> }
+            {this.props.user &&  this.props.user.admin && this.props.post.frozen &&
+              <ArticleEditor post={this.props.post} /> }
           </section> 
       </div>
      );
   }
 }
-
 let UnFreeze = (props) => {
+  console.log(props);
   let [confirm, setConfirm] = useState(false);
   return (
     <div>

@@ -86,6 +86,11 @@ class Firebase {
 	updatePass = (newPass) => {
 	    return this.auth.currentUser.updatePassword(newPass);
 	}
+
+	editArticle(storyID, text) {
+		let story = this.db.ref('frozen/' + storyID + '/article_text');
+		return story.set(text);
+	}
 	freezeStory(storyID) {
 		let story = this.db.ref('stories/' + storyID);
 		return story.once('value')
@@ -107,6 +112,8 @@ class Firebase {
 		})
 	}
 	unFreezeStory(storyID) {
+		console.log('unfreeze');
+		console.log(storyID);
 		let frozen_story = this.db.ref('frozen/' + storyID);
 		return frozen_story.once('value')
 		.then(res=>res.val())

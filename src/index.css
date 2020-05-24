@@ -203,3 +203,7 @@ button.vote-button.voted {
   flex-direction: column;
   max-width:600px;
 }
+.article_editor {
+  width:80%;
+  height:400px;
+}
