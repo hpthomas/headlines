@@ -128,17 +128,6 @@ class Firebase {
 		return newHeadlineKey;
 	}
 
-	fakeVotes = (postID, headlineID, count) => {
-		let post = this.db.ref("items/" + postID + "/submissions/" + headlineID + "/votes");
-		let updates = {};
-		for (var i=0;i<count;i++) {
-			var fakeUID = uuid.v4().substr(0,10);
-			var up = Math.random() >= 0.3;
-			updates[fakeUID] = up;
-		}
-		post.update(updates);
-	}
-
 	// v can be true, false or null
 	vote = (storyID, headlineID, v) => {
 		if (!this.auth.currentUser) return; //should not happen
@@ -155,6 +144,7 @@ class Firebase {
 		.once('value');
 		return stories;
 	}
+
 	getTodayPosts = () => {
 		let cutoff = yesterday();
 		let stories = this.db.ref('stories')
@@ -165,8 +155,8 @@ class Firebase {
 	}
 
 	//TODO IMPORTANT: When updated to use num, no num arg = all subs
-	getSubmissionsForPost(postID, num) {
-		return this.db.ref('storysubmissions/' + postID).once('value');
+	getSubmissionsForPost(storyID, num) {
+		return this.db.ref('storysubmissions/' + storyID).once('value');
 	}
 
 	getSubmissionsByUser = (uid) => {

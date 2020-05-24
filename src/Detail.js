@@ -26,7 +26,6 @@ class Detail extends React.Component {
 			else {
 				story.headlines = [];
 			}
-			console.log(story);
 			this.setState({item:story});
 		})
 	}
@@ -40,6 +39,7 @@ class Detail extends React.Component {
             timestamp={item.timestamp}
             headlines={item.headlines}
             show={100}
+            source={item.source}
             url={item.url} 
 	        />);
 	}

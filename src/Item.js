@@ -53,8 +53,10 @@ class Item extends React.Component {
   deleteSubmission(subID) {
     this.setState({headlines: this.state.headlines.filter(hl=>hl.key!==subID)});
   }
+  archive() {
+    console.log('archive');
+  } 
   render() {
-          /* itemcontainer is display:flex, flex-direction:column */  
     return (
         <div className="itemcontainer">
           <section className="date_above">{dateFormat(new Date(this.props.timestamp))}</section>
@@ -85,10 +87,28 @@ class Item extends React.Component {
               <NewSubmission submit={this.submit.bind(this)}/>  }
             {this.props.user && this.props.user.admin && 
               <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
+            {this.props.user && this.props.user.admin && 
+              <ArchiveStory archive={this.archive.bind(this)} /> }
           </section> 
       </div>
      );
   }
+}
+
+let ArchiveStory = (props) => {
+  let [confirm, setConfirm] = useState(false);
+  return (
+    <div>
+      {
+        confirm? 
+          <div>
+          <button type='button' onClick={()=>props.archive(props.id)}>Confirm</button>
+          <button type='button' onClick={()=>setConfirm(false)}>Cancel</button>
+          </div>
+        : <button type='button' onClick={()=>setConfirm(true)}>Archive</button>
+      }
+    </div>
+  )
 }
 
 let DeleteStory = (props) => {
