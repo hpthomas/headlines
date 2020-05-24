@@ -6,6 +6,7 @@ import Signup from './Signup';
 import {connect} from 'react-redux';
 import NewsHome from './NewsHome';
 import Newspaper from './Newspaper';
+import FrozenNewspaper from './FrozenNewspaper';
 import Category from './Category';
 import UserPage from './UserPage';
 import NewPost from './NewPost';
@@ -40,6 +41,11 @@ function TopBar(props) {
 									Archive
 								</Link>
 							</li>
+							<li>
+								<Link to={'/frozen'}>
+									Frozen	
+								</Link>
+							</li>
 						</ul>
 					</div>
 					<div className="menu-list-right">
@@ -68,6 +74,7 @@ function TopBar(props) {
 				<Route path='/user/:user' component = {UserPage} />
 				<Route path='/new' component = {NewPost} />
 				<Route path='/admin' component = {AdminPanel} />
+				<Route path='/frozen' component = {FrozenNewspaper} />
 			</div>
 		);
 }

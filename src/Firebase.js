@@ -44,8 +44,6 @@ class Firebase {
 			this.unsub(); //unsubscribe to auth change - only want this to run once 
 		});
 	}
-	reorganize() {
-	}
 	email() {
 		return this.auth.currentUser ? this.auth.currentUser.email : null;
 	}
@@ -89,7 +87,44 @@ class Firebase {
 	    return this.auth.currentUser.updatePassword(newPass);
 	}
 	freezeStory(storyID) {
-
+		let story = this.db.ref('stories/' + storyID);
+		return story.once('value')
+		.then(res=>res.val())
+		.then(story_data=>{
+			if (!story_data) {
+				return;
+			}
+			story_data['frozen'] = true;
+			let updates = {};
+			updates['/stories/' + storyID] = null;
+			updates['/frozen/' + storyID] = story_data;
+			let headlines = story_data.headlines || {};
+			for (var key in headlines) {
+				let uid = headlines[key].user;
+				updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + key] = 'frozen';
+			}
+			return this.db.ref().update(updates);
+		})
+	}
+	unFreezeStory(storyID) {
+		let frozen_story = this.db.ref('frozen/' + storyID);
+		return frozen_story.once('value')
+		.then(res=>res.val())
+		.then(story_data=>{
+			if (!story_data) {
+				return;
+			}
+			story_data['frozen'] = null;
+			let updates = {};
+			updates['/frozen/' + storyID] = null;
+			updates['/stories/' + storyID] = story_data;
+			let headlines = story_data.headlines || {};
+			for (var key in headlines) {
+				let uid = headlines[key].user;
+				updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + key] = 'active';
+			}
+			return this.db.ref().update(updates);
+		})
 	}
 	//TODO get rid of old
 	newArticle = (title,url,source) => {
@@ -120,7 +155,7 @@ class Firebase {
 			{headline:headline, user:uid, username:name, votes: {[uid]:true}, key:newHeadlineKey, timestamp:ts};
 
 			
-		updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + newHeadlineKey ] = true;
+		updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + newHeadlineKey ] = 'active';
 
 		this.db.ref().update(updates);
 		return newHeadlineKey;
@@ -133,6 +168,14 @@ class Firebase {
 		let post = this.db.ref("/stories/" + storyID + "/headlines/" + headlineID + "/votes");
 		let uid = this.auth.currentUser.uid;
 		post.update({[uid]:v});
+	}
+
+	getFrozenStories = () => {
+		/* TODO: Filter to most recent 10ish? */
+		let stories = this.db.ref('frozen')
+		.orderByChild('timestamp')
+		.once('value');
+		return stories;
 	}
 
 	getTopPosts = () => {

@@ -27,6 +27,7 @@ const ItemList = (props) => {
             source={item.source}
             show={props.show?props.show:4}
             url={item.url} 
+            frozen={item.frozen} 
          />
         </li>
         )}

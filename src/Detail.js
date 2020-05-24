@@ -41,6 +41,7 @@ class Detail extends React.Component {
             show={100}
             source={item.source}
             url={item.url} 
+            frozen={item.frozen} 
 	        />);
 	}
 }

@@ -2,51 +2,27 @@ import React from 'react';
 import {connect} from 'react-redux';
 import gotPostsAction from './actions/gotPostsAction';
 import ItemList from './ItemList';
-import sortHeadlines from './util/sortHeadlines';
-import sortStories from './util/sortStories';
 import {Link} from 'react-router-dom';
 import NewspaperItem from './NewspaperItem';
 import uuid from 'uuid';
 import './Newspaper.css';
+import processStories from './util/processStories';
 
 class NewsHome extends React.Component {
 	constructor(props) {
 		super(props);
 		// 'stories' is array of keys, ordered
 		// submissions is key:subs
-		this.state = {submissions:null, paperView:true}
+		this.state = {submissions:null}
 	}
 	// we use DidMount for initial API call
 	componentDidMount() {
-		let stories = null; // save story data as a [key:data] object
-		let keys = null;  // save story keys in sorted order
 		this.props.firebase.getTopPosts()
 		.then(res=>res.val())
 		.then(story_results=> {
-			if (!story_results) return;
-			let keys = Object.keys(story_results);
-			let stories = keys.map((key) => {
-				let story= story_results[key];
-				story.postID=key;
-				if (story.headlines) {
-					story.headlines = sortHeadlines(story.headlines);
-				}
-				else {
-					story.headlines = [];
-				}
-				return story;
-			});
-			stories = sortStories(stories);	
-			this.props.gotPosts(stories);
-		})
-		.catch(e=>{
-			console.log(e);
-			this.props.gotPosts([]);
+			let posts = processStories(story_results);
+			this.props.gotPosts(posts);
 		});
-	}
-
-	togglePaperView(){
-		this.setState({paperView:!this.state.paperView});
 	}
 
 	render() {

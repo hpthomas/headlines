@@ -63,6 +63,7 @@ class NewspaperItem extends React.Component {
 				            source={this.props.post.source}
 				            show={4}
 				            url={this.props.post.url} 
+				            frozen={this.props.post.frozen} 
 				         />
 				 	</div>
 			 	</div>);

@@ -1,12 +1,11 @@
 import React, {useState} from "react";
 import {connect} from "react-redux";
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import deleteAction from './actions/deleteAction';
 import deleteSubmissionAction from './actions/deleteSubmissionAction';
 import editAction from './actions/editAction';
 import Rewrite from './Rewrite';
 import dateFormat from './util/dateFormat';
-import {withRouter} from 'react-router-dom';
 import uuid from 'uuid';
 
 
@@ -53,8 +52,17 @@ class Item extends React.Component {
   deleteSubmission(subID) {
     this.setState({headlines: this.state.headlines.filter(hl=>hl.key!==subID)});
   }
-  archive() {
-    console.log('archive');
+  freeze(postID) {
+    this.props.firebase.freezeStory(postID)
+    .then(res=>{
+      this.props.history.push('/');
+    });
+  } 
+  unfreeze(postID) {
+    this.props.firebase.unFreezeStory(postID)
+    .then(res=>{
+      this.props.history.push('/');
+    });
   } 
   render() {
     return (
@@ -87,25 +95,42 @@ class Item extends React.Component {
               <NewSubmission submit={this.submit.bind(this)}/>  }
             {this.props.user && this.props.user.admin && 
               <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
-            {this.props.user && this.props.user.admin && 
-              <ArchiveStory archive={this.archive.bind(this)} /> }
+            {this.props.user &&  this.props.user.admin && !this.props.frozen &&
+              <Freeze id={this.props.postID} f={this.freeze.bind(this)} /> }
+            {this.props.user &&  this.props.user.admin && this.props.frozen &&
+              <UnFreeze id={this.props.postID} f={this.unfreeze.bind(this)} /> }
           </section> 
       </div>
      );
   }
 }
 
-let ArchiveStory = (props) => {
+let UnFreeze = (props) => {
   let [confirm, setConfirm] = useState(false);
   return (
     <div>
       {
         confirm? 
           <div>
-          <button type='button' onClick={()=>props.archive(props.id)}>Confirm</button>
+          <button type='button' onClick={()=>props.f(props.id)}>Confirm</button>
           <button type='button' onClick={()=>setConfirm(false)}>Cancel</button>
           </div>
-        : <button type='button' onClick={()=>setConfirm(true)}>Archive</button>
+        : <button type='button' onClick={()=>setConfirm(true)}>UnFreeze</button>
+      }
+    </div>
+  )
+}
+let Freeze = (props) => {
+  let [confirm, setConfirm] = useState(false);
+  return (
+    <div>
+      {
+        confirm? 
+          <div>
+          <button type='button' onClick={()=>props.f(props.id)}>Confirm</button>
+          <button type='button' onClick={()=>setConfirm(false)}>Cancel</button>
+          </div>
+        : <button type='button' onClick={()=>setConfirm(true)}>Freeze</button>
       }
     </div>
   )

@@ -22,7 +22,6 @@ class Landing extends React.Component {
 	render() {
 		return (
 	<div className='landing'>
-		<button type='button' onClick={()=>this.props.firebase.reorganize()}>reorganize</button>
 		<h1> Bottom Shelf News </h1>
 		<h2> A comedy newspaper where the users write the headlines.</h2>
 		<div className='dummy_newspaper'>

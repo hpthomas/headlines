@@ -8,7 +8,7 @@ import uuid from 'uuid';
 import processStories from './util/processStories';
 import './Newspaper.css';
 
-class Newspaper extends React.Component {
+class FrozenNewspaper extends React.Component {
 	constructor(props) {
 		super(props);
 		// 'stories' is array of keys, ordered
@@ -17,7 +17,7 @@ class Newspaper extends React.Component {
 	}
 	// we use DidMount for initial API call
 	componentDidMount() {
-		this.props.firebase.getTopPosts()
+		this.props.firebase.getFrozenStories()
 		.then(res=>res.val())
 		.then(story_results=> {
 			let posts = processStories(story_results);
@@ -43,5 +43,5 @@ let mstp = state => {
 let mdtp = dispatch => ({
 	gotPosts: (posts) => {dispatch(gotPostsAction(posts));}
 })
-export default connect(mstp, mdtp)(Newspaper);
+export default connect(mstp, mdtp)(FrozenNewspaper);
 

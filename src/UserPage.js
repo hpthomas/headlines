@@ -24,20 +24,19 @@ class UserPage extends React.Component {
 
 			if (!posts || !posts.stories) return;
 
-			//grab associated stories
-			//filter to only user-submitted ones
 			let story_keys = Object.keys(posts.stories);
 			let promises = story_keys.map(k=>this.props.firebase.getStoryByID(k));
 			Promise.all(promises)
 			.then(res=>res.map(item=>item.val()))
 			.then(stories=>{
-				stories.forEach(story=>{
+				stories.forEach((story,i)=>{
 					for (var headline in story.headlines){
 						if (story.headlines[headline].user != user) {
 							delete story.headlines[headline];
 						}
 					}
 					story.headlines = sortHeadlines(story.headlines);
+					story.postID=story_keys[i];
 				})
 				console.log(stories);
 				this.setState({postsAndUserSubmissions:stories});
