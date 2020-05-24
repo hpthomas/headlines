@@ -7,7 +7,7 @@ import sortHeadlines from './util/sortHeadlines';
 class UserPage extends React.Component {
 	constructor() {
 		super();
-		this.state = {postsAndUserSubmissions:null}
+		this.state = {active:null, frozen:null}
 	}
 	/* 
 	TODO this is roundabout fuckery
@@ -21,12 +21,13 @@ class UserPage extends React.Component {
 		this.props.firebase.getSubmissionsByUser(user)
 		.then(res => res.val())
 		.then(posts => {
-
 			if (!posts || !posts.stories) return;
-
 			let story_keys = Object.keys(posts.stories);
-			let promises = story_keys.map(k=>this.props.firebase.getStoryByID(k));
-			Promise.all(promises)
+			let active = story_keys.filter(k=>posts.stories[k].status==='active');
+			let frozen = story_keys.filter(k=>posts.stories[k].status==='frozen');
+
+			let active_promises = active.map(k=>this.props.firebase.getStoryByID(k));
+			Promise.all(active_promises)
 			.then(res=>res.map(item=>item.val()))
 			.then(stories=>{
 				stories.forEach((story,i)=>{
@@ -36,17 +37,36 @@ class UserPage extends React.Component {
 						}
 					}
 					story.headlines = sortHeadlines(story.headlines);
-					story.postID=story_keys[i];
+					story.postID=active[i];
 				})
-				console.log(stories);
-				this.setState({postsAndUserSubmissions:stories});
+				this.setState({active:stories});
+			})
+
+			let frozen_promises = frozen.map(k=>this.props.firebase.getFrozenStoryByID(k));
+			Promise.all(frozen_promises)
+			.then(res=>res.map(item=>item.val()))
+			.then(stories=>{
+				stories.forEach((story,i)=>{
+					for (var headline in story.headlines){
+						if (story.headlines[headline].user != user) {
+							delete story.headlines[headline];
+						}
+					}
+					story.headlines = sortHeadlines(story.headlines);
+					story.postID=frozen[i];
+				})
+				this.setState({frozen:stories});
 			})
 		})
 	}
 
 	render() {
-		if (!this.state.postsAndUserSubmissions) return <div></div>;
-		return <ItemList items={this.state.postsAndUserSubmissions} show={100}/>
+		return( <div>
+			<h1>active posts </h1>
+			<ItemList items={this.state.active} show={100}/>
+			<h1>frozen posts </h1>
+			<ItemList items={this.state.frozen} show={100}/>
+		</div>);
 	}
 }
 let mstp = state => {

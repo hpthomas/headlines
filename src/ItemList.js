@@ -13,6 +13,7 @@ import Item from './Item';
   Other Rewritings (2)
 */
 const ItemList = (props) => {
+  if (!props.items) return <div>nothing to display</div>
   return (
     <div>
       <ul className = 'links'>

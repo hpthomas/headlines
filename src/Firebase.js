@@ -101,7 +101,7 @@ class Firebase {
 			let headlines = story_data.headlines || {};
 			for (var key in headlines) {
 				let uid = headlines[key].user;
-				updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + key] = 'frozen';
+				updates['/users/' + uid + '/stories/' + storyID + '/status'] = 'frozen';
 			}
 			return this.db.ref().update(updates);
 		})
@@ -121,7 +121,7 @@ class Firebase {
 			let headlines = story_data.headlines || {};
 			for (var key in headlines) {
 				let uid = headlines[key].user;
-				updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + key] = 'active';
+				updates['/users/' + uid + '/stories/' + storyID + '/status'] = 'active';
 			}
 			return this.db.ref().update(updates);
 		})
@@ -155,7 +155,8 @@ class Firebase {
 			{headline:headline, user:uid, username:name, votes: {[uid]:true}, key:newHeadlineKey, timestamp:ts};
 
 			
-		updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + newHeadlineKey ] = 'active';
+		updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + newHeadlineKey ] = true;
+		updates['/users/' + uid + '/stories/' + storyID + '/status'] = 'active';
 
 		this.db.ref().update(updates);
 		return newHeadlineKey;
@@ -176,6 +177,11 @@ class Firebase {
 		.orderByChild('timestamp')
 		.once('value');
 		return stories;
+	}
+
+	getFrozenStoryByID = (postID) => {
+		// Get a list of {postID:subID} for all user submissions
+		return this.db.ref('/frozen/' + postID).once('value');
 	}
 
 	getTopPosts = () => {
