@@ -20,15 +20,8 @@ const ItemList = (props) => {
         {props.items.map(item =>
         <li key={uuid.v4()} >
          <Item 
-            postID = {item.postID}
-            category={item.category} 
-            orTitle={item.title} 
-            timestamp={item.timestamp}
-            headlines={item.headlines}
-            source={item.source}
+            post={item}
             show={props.show?props.show:4}
-            url={item.url} 
-            frozen={item.frozen} 
          />
         </li>
         )}

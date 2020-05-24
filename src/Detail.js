@@ -32,17 +32,7 @@ class Detail extends React.Component {
 	render() {
 		if (!this.state.item) return <div>hi</div>;
 		let item = this.state.item;
-		return (<Item 
-            postID = {this.props.match.params.postID}
-            category={item.category} 
-            orTitle={item.title} 
-            timestamp={item.timestamp}
-            headlines={item.headlines}
-            show={100}
-            source={item.source}
-            url={item.url} 
-            frozen={item.frozen} 
-	        />);
+		return (<Item post = {item} show={100}/>);
 	}
 }
 let mstp = state => {

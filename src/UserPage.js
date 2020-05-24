@@ -9,13 +9,6 @@ class UserPage extends React.Component {
 		super();
 		this.state = {active:null, frozen:null}
 	}
-	/* 
-	TODO this is roundabout fuckery
-	first get all posts WITH user subs
-	retrieve each individually
-	filter subs to target user & display
-	this is garbage
-	*/ 
 	componentDidMount() {
 		let user = this.props.match.params.user;
 		this.props.firebase.getSubmissionsByUser(user)

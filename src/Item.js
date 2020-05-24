@@ -8,17 +8,27 @@ import Rewrite from './Rewrite';
 import dateFormat from './util/dateFormat';
 import uuid from 'uuid';
 
-
+/* TODO 
+This will display a different thing depending on if it's frozen.
+If frozen, admin can edit the article text. 
+With an article, shows it.
+Without, normal. 
+That way, <Item> and its containers can be the view
+for both the in-edit and completed parts of the site */
 
 class Item extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {headlines:this.props.headlines.slice(0,this.props.show)};
+    let headlines = [];
+    if (this.props.post.headlines) {
+      headlines = this.props.post.headlines.slice(0,this.props.show);
+    }
+    this.state = {headlines:headlines}
   }
 
   submit(title) {
     if (!title) return;
-    let newkey = this.props.firebase.newHeadline(this.props.postID, title);
+    let newkey = this.props.firebase.newHeadline(this.props.post.postID, title);
     let newhl = {headline:title, 
                  user:this.props.user.uid, 
                  username:this.props.user.displayName, 
@@ -67,23 +77,23 @@ class Item extends React.Component {
   render() {
     return (
         <div className="itemcontainer">
-          <section className="date_above">{dateFormat(new Date(this.props.timestamp))}</section>
+          <section className="date_above">{dateFormat(new Date(this.props.post.timestamp))}</section>
 
           <section className="original main">
               <p>
-                <Link to={'/detail/' + this.props.postID}> {this.props.orTitle} </Link>
+                <Link to={'/detail/' + this.props.post.postID}> {this.props.post.title} </Link>
               </p>
           </section>
 
           <div className="right">
-            <a href={this.props.url}>{this.props.source || "unknown"} &#8599;</a>
+            <a href={this.props.post.url}>{this.props.post.source || "unknown"} &#8599;</a>
           </div>
 
           {this.state.headlines.map(headline =>
               <Rewrite
                 key={uuid.v4()}
                 className="best-rewrite" 
-                postID={this.props.postID} 
+                postID={this.props.post.postID} 
                 rw={headline}
                 vote={this.vote.bind(this, headline.key) }
                 delete={this.deleteSubmission.bind(this)}
@@ -94,10 +104,10 @@ class Item extends React.Component {
             {this.props.user && 
               <NewSubmission submit={this.submit.bind(this)}/>  }
             {this.props.user && this.props.user.admin && 
-              <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
-            {this.props.user &&  this.props.user.admin && !this.props.frozen &&
-              <Freeze id={this.props.postID} f={this.freeze.bind(this)} /> }
-            {this.props.user &&  this.props.user.admin && this.props.frozen &&
+              <DeleteStory id={this.props.post.postID} delete={this.delete.bind(this)} /> }
+            {this.props.user &&  this.props.user.admin && !this.props.post.frozen &&
+              <Freeze id={this.props.post.postID} f={this.freeze.bind(this)} /> }
+            {this.props.user &&  this.props.user.admin && this.props.post.frozen &&
               <UnFreeze id={this.props.postID} f={this.unfreeze.bind(this)} /> }
           </section> 
       </div>

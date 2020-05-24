@@ -55,15 +55,8 @@ class NewspaperItem extends React.Component {
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
 			        <div className="big" >
 				         <Item 
-				            postID = {this.props.post.postID}
-				            category={this.props.post.category} 
-				            orTitle={this.props.post.title} 
-				            timestamp={this.props.post.timestamp}
-				            headlines={this.props.post.headlines}
-				            source={this.props.post.source}
+				            post = {this.props.post}
 				            show={4}
-				            url={this.props.post.url} 
-				            frozen={this.props.post.frozen} 
 				         />
 				 	</div>
 			 	</div>);
