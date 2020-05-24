@@ -14,7 +14,6 @@ import uuid from 'uuid';
 class Item extends React.Component {
   constructor(props) {
     super(props);
-    window.p=props.post;
     this.state = {headlines:this.props.headlines.slice(0,this.props.show)};
   }
 
@@ -55,37 +54,38 @@ class Item extends React.Component {
     this.setState({headlines: this.state.headlines.filter(hl=>hl.key!==subID)});
   }
   render() {
+          /* itemcontainer is display:flex, flex-direction:column */  
     return (
         <div className="itemcontainer">
-        <span className="date_above">{dateFormat(new Date(this.props.timestamp))}</span>
-        <section className="original">
-          <div className="main">
-            <p>
-              <Link to={'/detail/' + this.props.postID}> {this.props.orTitle} </Link>
-            </p>
-          </div>
+          <section className="date_above">{dateFormat(new Date(this.props.timestamp))}</section>
+
+          <section className="original main">
+              <p>
+                <Link to={'/detail/' + this.props.postID}> {this.props.orTitle} </Link>
+              </p>
+          </section>
+
           <div className="right">
             <a href={this.props.url}>{this.props.source || "unknown"} &#8599;</a>
           </div>
-        </section>
 
-        {this.state.headlines.map(headline =>
-            <Rewrite
-              key={uuid.v4()}
-              className="best-rewrite" 
-              postID={this.props.postID} 
-              rw={headline}
-              vote={this.vote.bind(this, headline.key) }
-              delete={this.deleteSubmission.bind(this)}
-            />
-          )  }
-        <section className="itembuttons"> 
-        {this.props.user && 
-          <NewSubmission submit={this.submit.bind(this)}/>  }
+          {this.state.headlines.map(headline =>
+              <Rewrite
+                key={uuid.v4()}
+                className="best-rewrite" 
+                postID={this.props.postID} 
+                rw={headline}
+                vote={this.vote.bind(this, headline.key) }
+                delete={this.deleteSubmission.bind(this)}
+              />
+            )  }
 
-        {this.props.user && this.props.user.admin && 
-          <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
-        </section> 
+          <section className="itembuttons"> 
+            {this.props.user && 
+              <NewSubmission submit={this.submit.bind(this)}/>  }
+            {this.props.user && this.props.user.admin && 
+              <DeleteStory id={this.props.postID} delete={this.delete.bind(this)} /> }
+          </section> 
       </div>
      );
   }

@@ -49,13 +49,13 @@ class Landing extends React.Component {
 				We take a news story with a regular, not-funny headline:
 			</p>
 			<div className='dummy_newspaper'>
-				<NewspaperItem post={dummy_3} />	
+				<NewspaperItem num={0} post={dummy_3} />	
 			</div>				
 			<p className='faq-a'>
 				...and our users think of a funnier way to say the same thing:
 			</p>
 			<div className='dummy_newspaper'>
-				<NewspaperItem post={dummy_1} />	
+				<NewspaperItem num={0} post={dummy_1} />	
 			</div>				
 			<p className='faq-a'>
 				That's it! You can vote on your favorite headlines or submit your own.

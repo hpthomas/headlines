@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from "react";
 import {Fragment} from 'react';
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
@@ -18,12 +18,11 @@ class Rewrite extends React.Component {
 		let canDelete = canVote && this.props.user.uid===this.props.rw.user;
 
 		return (
-			<section className="submission">
-				<div className="main">
+			<section className="submission main">
 					<p>{this.props.rw.headline}</p>
 					<div className="bottomBar">
 						<span>
-					  		<Link to={'/user/'+this.props.rw.user}>{this.props.rw.username}</Link>
+					  		<Link to={'/user/'+this.props.rw.user}>{this.props.rw.username || "anon"}</Link>
 						</span>
 						<span>
 							&#8226;
@@ -47,12 +46,11 @@ class Rewrite extends React.Component {
 									&#8226;
 								</span>
 								<span>
-					    			<button type='button' onClick={this.delete.bind(this)}>delete</button>
+					    			<DeleteHeadline delete={this.delete.bind(this)} />
 								</span>
 					    	</Fragment>
 					    }
 					</div>
-				</div>
 			</section>);
 	}
 	delete() {
@@ -91,6 +89,15 @@ class Rewrite extends React.Component {
 	}
 }
 
+let DeleteHeadline = (props) => {
+  let [confirm, setConfirm] = useState(false);
+  return confirm? 
+          <Fragment>
+          <button type='button' onClick={()=>props.delete(props.id)}>Confirm</button>
+          <button type='button' onClick={()=>setConfirm(false)}>Cancel</button>
+          </Fragment>
+        : <button type='button' onClick={()=>setConfirm(true)}>Delete</button>;
+}
 let mstp = state=>({
 	firebase:state.firebase, 
 	user: state.user

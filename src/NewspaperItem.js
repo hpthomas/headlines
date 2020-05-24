@@ -16,7 +16,11 @@ titles without submissions should be highlighted.
 class NewspaperItem extends React.Component {
 	constructor(props){
 		super(props);
-		this.state={hovering:false, big:false}
+		//TODO just to auto-show a thing in newspaper for editing
+		/*
+		if (props.num==1) this.state={hovering:false, big:true};
+		else this.state={hovering:false, big:false}; */
+		this.state={hovering:false, big:false};
 	}
 	mouseEnter(){
 		this.setState({hovering:true});
@@ -70,7 +74,13 @@ class NewspaperItem extends React.Component {
 
 		TODO: Mobile tap should show this, second tap = desktop click 
 		TODO: Just set hide variable and remove if */
-		let hide = !this.state.hovering? "hide" : "";
+		let hide = "hide";
+		if (num_headlines<1) {
+			hide="dim";
+		}
+		if (this.state.hovering) {
+			hide="";
+		}
 			return (
 			 	<article className={css_class} onClick={this.click.bind(this)} onTouchStart={this.mouseEnter.bind(this)} onTouchEnd={this.mouseLeave.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
 			 		<h2> 
@@ -85,7 +95,7 @@ class NewspaperItem extends React.Component {
 		 				</span>
 		 				{this.props.post.title}
 		 			</h3>
-		 			<h4 className={"article_below_small " + hide} >
+		 			<h4 className={"article_below_small "} >
 		 				{date}
 		 			</h4>
 			 	</article>);

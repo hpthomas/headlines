@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import gotPostsAction from './actions/gotPostsAction';
 import ItemList from './ItemList';
 import sortHeadlines from './util/sortHeadlines';
+import sortStories from './util/sortStories';
 import {Link} from 'react-router-dom';
 import NewspaperItem from './NewspaperItem';
 import uuid from 'uuid';
@@ -46,6 +47,7 @@ class Newspaper extends React.Component {
 				}
 				return s;
 			});
+			posts = sortStories(posts);	
 			this.props.gotPosts(posts);
 		})
 		.catch(e=>{
