@@ -44,7 +44,8 @@ class Firebase {
 			this.unsub(); //unsubscribe to auth change - only want this to run once 
 		});
 	}
-
+	reorganize() {
+	}
 	email() {
 		return this.auth.currentUser ? this.auth.currentUser.email : null;
 	}
@@ -87,7 +88,9 @@ class Firebase {
 	updatePass = (newPass) => {
 	    return this.auth.currentUser.updatePassword(newPass);
 	}
+	freezeStory(storyID) {
 
+	}
 	//TODO get rid of old
 	newArticle = (title,url,source) => {
 		if (!this.auth.currentUser) return; //should not happen
@@ -104,8 +107,6 @@ class Firebase {
 
 	newHeadline = (storyID,headline) => {
 		if (!this.auth.currentUser) return; //should not happen
-		// TODO  This was originally storysubmissions/storyID/newkey
-		// Moved to submissions to guarantee uniqueness - needed??
 		let post = this.db.ref("submissions/");
 		let newHeadlineKey = post.push().key;
 		let uid = this.auth.currentUser.uid;
@@ -115,7 +116,7 @@ class Firebase {
 
 		// Logging user's vote in 2 places: /submissions and /users 
 
-		updates['/storysubmissions/' + storyID + '/' + newHeadlineKey] =
+		updates['/stories/' + storyID + '/headlines/' + newHeadlineKey] =
 			{headline:headline, user:uid, username:name, votes: {[uid]:true}, key:newHeadlineKey, timestamp:ts};
 
 			
@@ -132,7 +133,7 @@ class Firebase {
 	vote = (storyID, headlineID, v) => {
 		if (!this.auth.currentUser) return; //should not happen
 		//console.log(this.auth.currentUser, postID, headlineID);
-		let post = this.db.ref("storysubmissions/" + storyID + "/" + headlineID + "/votes");
+		let post = this.db.ref("/stories/" + storyID + "/headlines/" + headlineID + "/votes");
 		let uid = this.auth.currentUser.uid;
 		post.update({[uid]:v});
 	}
@@ -156,7 +157,7 @@ class Firebase {
 
 	//TODO IMPORTANT: When updated to use num, no num arg = all subs
 	getSubmissionsForPost(storyID, num) {
-		return this.db.ref('storysubmissions/' + storyID).once('value');
+		return this.db.ref('stories/' + storyID + '/headlines/').once('value');
 	}
 
 	getSubmissionsByUser = (uid) => {
@@ -167,11 +168,6 @@ class Firebase {
 	getSubmissionByID = (subID) => {
 		// Get a list of {postID:subID} for all user submissions
 		return this.db.ref('/submissions/' + subID).once('value');
-	}
-
-	// storyAndSubID looks like "storyID/subID"
-	getStorySubmissionByID = (storyAndSubID) => {
-		return this.db.ref('/storysubmissions/' + storyAndSubID).once('value');
 	}
 
 	getStoryByID = (postID) => {
@@ -189,7 +185,6 @@ class Firebase {
 	deleteStory = (storyID) => {
 		let updates = {};
 		updates['stories/' + storyID] = null;
-		updates['storysubmissions/' + storyID] = null;
 		console.log(updates);
 		return this.getSubmissionsForPost(storyID)
 		.then(res=>res.val())
@@ -206,7 +201,6 @@ class Firebase {
 
 	deleteSubmission(storyID, submissionID, userID) {
 		let updates = {};
-		updates['storysubmissions/' + storyID + '/' + submissionID] = null;
 		updates['submissions/' + submissionID] = null;
 		updates['users/' + userID + '/stories/' + storyID+'/submissions/' + submissionID] = null;
 		return this.db.ref().update(updates);

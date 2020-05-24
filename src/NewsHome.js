@@ -22,33 +22,22 @@ class NewsHome extends React.Component {
 		let keys = null;  // save story keys in sorted order
 		this.props.firebase.getTopPosts()
 		.then(res=>res.val())
-		.then(postsObject=> {
-			if (!postsObject) return;
-			stories = postsObject;
-			keys = Object.keys(postsObject);
-			keys.reverse();
-			let subs = keys.map(k=>this.props.firebase.getSubmissionsForPost(k));
-			return Promise.all(subs);
-		})
-		.then(results => results.map(r=>r.val()))
-		.then(submissions=>{
-			let subs = submissions.map( (sub,index) => {
-				return {[keys[index]]:sub};
-			});
-			let posts = keys.map((key,index) => {
-				let s = stories[key];
-				s.postID=key;
-				if (subs[index]) {
-					let headlines = subs[index][Object.keys(subs[index])[0]];
-					s.headlines = sortHeadlines(headlines);
+		.then(story_results=> {
+			if (!story_results) return;
+			let keys = Object.keys(story_results);
+			let stories = keys.map((key) => {
+				let story= story_results[key];
+				story.postID=key;
+				if (story.headlines) {
+					story.headlines = sortHeadlines(story.headlines);
 				}
 				else {
-					s.headlines = [];
+					story.headlines = [];
 				}
-				return s;
+				return story;
 			});
-			posts = sortStories(posts);	
-			this.props.gotPosts(posts);
+			stories = sortStories(stories);	
+			this.props.gotPosts(stories);
 		})
 		.catch(e=>{
 			console.log(e);

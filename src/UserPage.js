@@ -21,54 +21,27 @@ class UserPage extends React.Component {
 		this.props.firebase.getSubmissionsByUser(user)
 		.then(res => res.val())
 		.then(posts => {
-			console.log(posts);
 
 			if (!posts || !posts.stories) return;
 
-			let storiesWithUserSubs = posts.stories;
-			let story_keys = Object.keys(storiesWithUserSubs);
-			story_keys.reverse();
-
-			let subPromises = story_keys.map(key => {
-				let subs = Object.keys(storiesWithUserSubs[key].submissions);
-				return subs.map(subID => key + "/" + subID);
+			//grab associated stories
+			//filter to only user-submitted ones
+			let story_keys = Object.keys(posts.stories);
+			let promises = story_keys.map(k=>this.props.firebase.getStoryByID(k));
+			Promise.all(promises)
+			.then(res=>res.map(item=>item.val()))
+			.then(stories=>{
+				stories.forEach(story=>{
+					for (var headline in story.headlines){
+						if (story.headlines[headline].user != user) {
+							delete story.headlines[headline];
+						}
+					}
+					story.headlines = sortHeadlines(story.headlines);
+				})
+				console.log(stories);
+				this.setState({postsAndUserSubmissions:stories});
 			})
-			.flat()
-			.map(k=>this.props.firebase.getStorySubmissionByID(k));
-
-			Promise.all(subPromises)
-			.then(res => res.map(sub=>{
-				let path = sub.ref.path.toString().split('/');
-				let storyID = path[path.length-2];
-				return [storyID, sub.val()];
-			}))
-			.then(submissions=>{
-				let stories = {};
-				submissions.forEach(sub => {
-					if (!stories[sub[0]]) {
-						stories[sub[0]] = [sub[1]];
-					}
-					else {
-						stories[sub[0]].push(sub[1]);
-					}
-				})
-				let story_promises = story_keys.map(k=>this.props.firebase.getStoryByID(k))
-				Promise.all(story_promises)
-				.then(res=>res.map(story=>[story.key, story.val()]))
-				.then(story_data=>{
-					console.log(story_data);
-					let items = [];
-					story_data.forEach(story=>{
-						let key = story[0];
-						let temp = stories[key];
-						stories[key] = story[1];
-						stories[key].headlines = sortHeadlines(temp);
-						stories[key].postID=key;
-						items.push(stories[key]);
-					})
-					this.setState({postsAndUserSubmissions:items});
-				})
-			});
 		})
 	}
 
