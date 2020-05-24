@@ -107,7 +107,7 @@ class Firebase {
 
 	newHeadline = (storyID,headline) => {
 		if (!this.auth.currentUser) return; //should not happen
-		let post = this.db.ref("submissions/");
+		let post = this.db.ref("stories/" + storyID + '/headlines');
 		let newHeadlineKey = post.push().key;
 		let uid = this.auth.currentUser.uid;
 		let name = this.auth.currentUser.displayName;
@@ -121,9 +121,6 @@ class Firebase {
 
 			
 		updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + newHeadlineKey ] = true;
-
-		updates['/submissions/' + newHeadlineKey] = 
-			{headline:headline, user:uid, username:name, key:newHeadlineKey, story:storyID, timestamp:ts};
 
 		this.db.ref().update(updates);
 		return newHeadlineKey;
@@ -165,11 +162,6 @@ class Firebase {
 		return this.db.ref('users/' + uid).orderByChild('timestamp').once('value');
 	}
 
-	getSubmissionByID = (subID) => {
-		// Get a list of {postID:subID} for all user submissions
-		return this.db.ref('/submissions/' + subID).once('value');
-	}
-
 	getStoryByID = (postID) => {
 		// Get a list of {postID:subID} for all user submissions
 		return this.db.ref('/stories/' + postID).once('value');
@@ -191,7 +183,6 @@ class Firebase {
 		.then(headlines => {
 			for (var hl in headlines){
 				let user = headlines[hl].user;
-				updates['submissions/' + hl] = null;
 				updates['users/' + user + '/stories/' + storyID] = null;	
 			}
 			console.log(updates);
@@ -201,7 +192,6 @@ class Firebase {
 
 	deleteSubmission(storyID, submissionID, userID) {
 		let updates = {};
-		updates['submissions/' + submissionID] = null;
 		updates['users/' + userID + '/stories/' + storyID+'/submissions/' + submissionID] = null;
 		return this.db.ref().update(updates);
 	}
