@@ -16,10 +16,10 @@ titles without submissions should be highlighted.
 class NewspaperItem extends React.Component {
 	constructor(props){
 		super(props);
-		//TODO just to auto-show a thing in newspaper for editing
 		/*
-		if (props.num==1) this.state={hovering:false, big:true};
-		else this.state={hovering:false, big:false}; */
+		if (props.num==0) this.state={hovering:false, big:true};
+		else this.state={hovering:false, big:false}; 
+		*/
 		this.state={hovering:false, big:false};
 	}
 	mouseEnter(){
@@ -49,7 +49,6 @@ class NewspaperItem extends React.Component {
 		}
 		// display Item instead of NewspaperItem
 		if (this.state.big) {
-			window.post=this.props.post;
 			return (
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
@@ -75,24 +74,47 @@ class NewspaperItem extends React.Component {
 		if (this.state.hovering) {
 			hide="";
 		}
-			return (
-			 	<article className={css_class} onClick={this.click.bind(this)} onTouchStart={this.mouseEnter.bind(this)} onTouchEnd={this.mouseLeave.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
-			 		<h2> 
-			 			{best ? best.headline : "?"}
-			 		</h2>
-			 		<h3 className="article_below_medium ">
-			 			{best?<Link to={'/user/'+best.user}>{best.username}</Link>:"no submissions"}
-			 		</h3>
-		 			<h3 className={"article_below_medium " + hide} >
-		 				<span className="code">
-		 					<a href={this.props.post.url}>{this.props.post.source }</a>:  
-		 				</span>
-		 				{this.props.post.title}
-		 			</h3>
-		 			<h4 className={"article_below_small "} >
-		 				{date}
-		 			</h4>
-			 	</article>);
+		let below_content = null;
+
+
+		//TODO this should check for completeed, not just frozen, articles.
+		if (this.props.post.frozen) {
+			let below_text = this.props.post.article_text;
+			if(!below_text) {
+				below_text = '';
+			}
+			if (below_text.length > 100){
+				below_text = below_text.substring(0,100) + "...";
+			}
+			below_content = 
+				<h3 className={"article_below_medium " + hide}> 
+					{below_text}
+				</h3>;
+		}
+		else {
+			below_content = 
+				<h3 className={"article_below_medium " + hide}> 
+	 				<span className="code">
+	 					<a href={this.props.post.url}>{this.props.post.source }</a>:  
+	 				</span>
+	 				{this.props.post.title}
+				</h3>;
+		}
+
+
+		return (
+	 	<article className={css_class} onClick={this.click.bind(this)} onTouchStart={this.mouseEnter.bind(this)} onTouchEnd={this.mouseLeave.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
+	 		<h2> 
+	 			{best ? best.headline : "?"}
+	 		</h2>
+	 		<h3 className="article_below_medium ">
+	 			{best?<Link to={'/user/'+best.user}>{best.username}</Link>:"no submissions"}
+	 		</h3>
+	 		{below_content}
+ 			<h4 className={"article_below_small "} >
+ 				{date}
+ 			</h4>
+	 	</article>);
 	}
 }
 

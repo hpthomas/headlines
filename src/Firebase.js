@@ -87,10 +87,20 @@ class Firebase {
 	    return this.auth.currentUser.updatePassword(newPass);
 	}
 
-	editArticle(storyID, text) {
-		let story = this.db.ref('frozen/' + storyID + '/article_text');
-		return story.set(text);
+	saveArticle(storyID, text) {
+		let updates = {};
+		updates['frozen/' + storyID + '/article_text'] = text;
+		updates['frozen/' + storyID + '/article_saved'] = true;
+		return this.db.ref().update(updates);
 	}
+
+	editArticle(storyID, text) {
+		let updates = {};
+		updates['frozen/' + storyID + '/article_text'] = text;
+		updates['frozen/' + storyID + '/article_saved'] = null;
+		return this.db.ref().update(updates);
+	}
+	
 	freezeStory(storyID) {
 		let story = this.db.ref('stories/' + storyID);
 		return story.once('value')
@@ -164,7 +174,7 @@ class Firebase {
 			
 		updates['/users/' + uid + '/stories/' + storyID + '/submissions/' + newHeadlineKey ] = true;
 		updates['/users/' + uid + '/stories/' + storyID + '/status'] = 'active';
-
+		console.log(updates);
 		this.db.ref().update(updates);
 		return newHeadlineKey;
 	}
@@ -249,6 +259,8 @@ class Firebase {
 	deleteSubmission(storyID, submissionID, userID) {
 		let updates = {};
 		updates['users/' + userID + '/stories/' + storyID+'/submissions/' + submissionID] = null;
+		updates['stories/' + storyID + '/headlines/' + submissionID] = null;
+		console.log(updates);
 		return this.db.ref().update(updates);
 	}
 

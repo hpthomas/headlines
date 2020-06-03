@@ -6,6 +6,7 @@ import deleteSubmissionAction from './actions/deleteSubmissionAction';
 import editAction from './actions/editAction';
 import Rewrite from './Rewrite';
 import ArticleEditor from './ArticleEditor';
+import ArticleItem from './ArticleItem';
 import dateFormat from './util/dateFormat';
 import uuid from 'uuid';
 
@@ -76,6 +77,9 @@ class Item extends React.Component {
     });
   } 
   render() {
+    if (this.props.post.frozen && this.props.post.article_saved) {
+      return <ArticleItem post={this.props.post} />
+    }
     return (
         <div className="itemcontainer">
           <section className="date_above">{dateFormat(new Date(this.props.post.timestamp))}</section>
@@ -118,7 +122,6 @@ class Item extends React.Component {
   }
 }
 let UnFreeze = (props) => {
-  console.log(props);
   let [confirm, setConfirm] = useState(false);
   return (
     <div>

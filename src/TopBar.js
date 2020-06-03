@@ -32,18 +32,18 @@ function TopBar(props) {
 								</Link>
 							</li>
 							<li>
-								<Link to={'/newspaper'}>
-									Newspaper
+								<Link to={'/active'}>
+									Active	
 								</Link>
 							</li>
 							<li>
-								<Link to={'/news'}>
+								<Link to={'/archive'}>
 									Archive
 								</Link>
 							</li>
 							<li>
-								<Link to={'/frozen'}>
-									Frozen	
+								<Link to={'/about'}>
+									About
 								</Link>
 							</li>
 						</ul>
@@ -64,9 +64,12 @@ function TopBar(props) {
 						</ul>
 					</div>
 				</div>
-				<Route exact path='/' component = {Landing} />
-				<Route path='/news' component = {NewsHome} />
-				<Route path='/newspaper' component = {Newspaper} />
+				<h1 className='news_header'> Bottom Shelf News </h1>
+				<h2 className='news_header'> A comedy newspaper where the users write the headlines.</h2>
+				<Route exact path='/' component = {FrozenNewspaper} />
+				<Route path='/active' component = {Newspaper} />
+				<Route path='/archive' component = {NewsHome} />
+				<Route path='/about' component = {Landing} />
 				<Route path='/login' component = {Login} />
 				<Route path='/signup' component = {Signup} />
 				<Route path='/detail/:postID' component = {Detail} />
@@ -74,7 +77,6 @@ function TopBar(props) {
 				<Route path='/user/:user' component = {UserPage} />
 				<Route path='/new' component = {NewPost} />
 				<Route path='/admin' component = {AdminPanel} />
-				<Route path='/frozen' component = {FrozenNewspaper} />
 			</div>
 		);
 }

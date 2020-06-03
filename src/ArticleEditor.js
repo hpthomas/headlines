@@ -14,6 +14,10 @@ class ArticleEditor extends React.Component {
 		this.props.firebase.editArticle(this.props.post.postID, this.state.text);
 	}
 
+	save() {
+		this.props.firebase.saveArticle(this.props.post.postID, this.state.text);
+	}
+
 	render() {
 	return (<div>
 		<div>
@@ -21,6 +25,7 @@ class ArticleEditor extends React.Component {
 		</div>
 		<div>
 			<button type='button' onClick={this.submit.bind(this)}> submit </button>
+			<button type='button' onClick={this.save.bind(this)}> save </button>
 		</div>
 	</div>);
 	}

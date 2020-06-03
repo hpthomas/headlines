@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import gotPostsAction from './actions/gotPostsAction';
 import ItemList from './ItemList';

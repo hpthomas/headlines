@@ -175,6 +175,7 @@ position:absolute;
 z-index: 1003;
 width: 65%;
 top: 15%;
+
 left: 17%;
 height:auto;
 padding-bottom:60px;
@@ -257,3 +258,12 @@ font-family: timesnewroman, "times new roman", times, baskerville, georgia, seri
     font-size:0.8em;
  }
 
+ .news_article {
+  width:80%;
+ }
+.article_headline {
+  font-size:24px;
+}
+.news_article p {
+  font-size:16px;
+}

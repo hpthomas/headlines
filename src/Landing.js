@@ -22,15 +22,31 @@ class Landing extends React.Component {
 	render() {
 		return (
 	<div className='landing'>
-		<h1> Bottom Shelf News </h1>
-		<h2> A comedy newspaper where the users write the headlines.</h2>
+		<p>
+			Welcome to bottom shelf news. 
+			This is a comedy newspaper where the headlines are written by the users! 
+		</p>
+		<p>
+			Click anywhere to continue.
+		</p>
+	{/* 
+		Bottom Shelf News is a comedy newspaper where the users write the headlines. 
+
+		READ THE NEWS: Close this popup to 
+
+		WRITE THE NEWS: Some stories need headlines! Find them heree. 
+
+		FAQ (expand) 
+
+
+	*/ }
 		<div className='dummy_newspaper'>
 				<NewspaperItem num={0} post={dummy_1} />	
 				<NewspaperItem num={1} post={dummy_2} />	
 				<NewspaperItem num={2} post={dummy_4} />	
 		</div>
 		<div className='buttons'>
-			<Link to='/newspaper' className='buttonLink'>
+			<Link to='/' className='buttonLink'>
 				<button className='landing_button' type='button'>
 					See the paper
 				</button>
