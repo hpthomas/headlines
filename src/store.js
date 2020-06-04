@@ -13,6 +13,10 @@ function mainReducer(state, action) {
 			return {...state, posts: deleteOneHeadlineFromPosts(state.posts,action.postID, action.subID)};
 		case 'DELETE_ACTION':
 			return {...state, posts: state.posts.filter(post=>post.postID!==action.postID)};
+		case 'TOGGLE_TOUR_ACTION':
+			return {...state, show_tour: (!state.show_tour) };
+		case 'FORCE_CLICK_ACTION':
+			return {...state, force_click:(!state.force_click)};
 		case 'EDIT_ACTION':
 			console.log(state);
 			return {...state, posts: state.posts.map(oldPost => 
@@ -39,6 +43,8 @@ let deleteOneHeadlineFromPosts = (posts, postID, subID) => {
 function defaultState() {
 	return {
 		user: null,
+		show_tour:false,
+		force_click:false,
 		posts:[],
 		firebase: new Firebase(),
 		categories: ['general','sports','politics']

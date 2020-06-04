@@ -1,7 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Item from './Item';
+import {connect} from 'react-redux';
 import dateFormat from './util/dateFormat';
+import {withRouter} from 'react-router-dom';
 /* 
 The core purpose of this class is to display a news article 
 in newspaper format, to a reader.
@@ -20,7 +22,7 @@ class NewspaperItem extends React.Component {
 		if (props.num==0) this.state={hovering:false, big:true};
 		else this.state={hovering:false, big:false}; 
 		*/
-		this.state={hovering:false, big:false};
+		this.state={hovering:false, big:false, oldurl:null};
 	}
 	mouseEnter(){
 		this.setState({hovering:true});
@@ -29,9 +31,23 @@ class NewspaperItem extends React.Component {
 		this.setState({hovering:false});
 	}
 	click() {
-		this.setState({big:!this.state.big});
+		let url = this.props.history.location.pathname;
+		if (this.state.big) {
+			console.log('setting big to false');
+			this.setState({big:false});
+		}
+		else {
+			console.log('setting big to true');
+			this.setState({oldurl:url, big:true});
+		}
 	}
 	render() {
+		let hovering = this.state.hovering;
+		if (this.props.tour){
+			hovering = this.props.num==0;
+		}
+		if (this.state.big) {
+		}
 		let date = dateFormat(new Date(this.props.post.timestamp));
 		let num_headlines = this.props.post.headlines.length;
 		let best = null;
@@ -47,8 +63,10 @@ class NewspaperItem extends React.Component {
 		else {
 			css_class += 'articleN';
 		}
+
+		let force_clicked = this.props.force_click && this.props.num==0;
 		// display Item instead of NewspaperItem
-		if (this.state.big) {
+		if (this.state.big || force_clicked) {
 			return (
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
@@ -71,7 +89,7 @@ class NewspaperItem extends React.Component {
 		if (num_headlines<1) {
 			hide="dim";
 		}
-		if (this.state.hovering) {
+		if (hovering) {
 			hide="";
 		}
 		let below_content = null;
@@ -117,5 +135,6 @@ class NewspaperItem extends React.Component {
 	 	</article>);
 	}
 }
+let mstp = (state) => ({force_click:state.force_click, tour:state.show_tour});
 
-export default NewspaperItem;
+export default connect(mstp)(withRouter(NewspaperItem));

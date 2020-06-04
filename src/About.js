@@ -3,9 +3,10 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import loginAction from './actions/loginAction'
 import NewspaperItem from './NewspaperItem'
+import OnboardingSteps from './OnboardingSteps'
 
 
-class Landing extends React.Component {
+class About extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {expand:true}
@@ -22,13 +23,6 @@ class Landing extends React.Component {
 	render() {
 		return (
 	<div className='landing'>
-		<p>
-			Welcome to bottom shelf news. 
-			This is a comedy newspaper where the headlines are written by the users! 
-		</p>
-		<p>
-			Click anywhere to continue.
-		</p>
 	{/* 
 		Bottom Shelf News is a comedy newspaper where the users write the headlines. 
 
@@ -144,4 +138,5 @@ let dummy_4 = {
 };
 let mstp = (state) => ({firebase:state.firebase});
 let mdtp = (dispatch) => (  {setLogin : (user) => dispatch(loginAction(user)) }  );
-export default connect(mstp,mdtp)(Landing);
+export default connect(mstp,mdtp)(About);
+
