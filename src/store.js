@@ -16,7 +16,12 @@ function mainReducer(state, action) {
 		case 'TOGGLE_TOUR_ACTION':
 			return {...state, show_tour: (!state.show_tour) };
 		case 'FORCE_CLICK_ACTION':
-			return {...state, force_click:(!state.force_click)};
+			if (!(action.target===undefined)) {
+				return {...state, force_click:action.target};
+			}
+			else {
+				return {...state, force_click:(!state.force_click)};
+			}
 		case 'EDIT_ACTION':
 			console.log(state);
 			return {...state, posts: state.posts.map(oldPost => 

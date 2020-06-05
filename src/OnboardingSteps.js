@@ -57,23 +57,29 @@ class OnboardingSteps extends React.Component{
           disableBeacon: true,
         },
         {
-          content: <div><h2>This is our top submission of the day.</h2><h3>Can you do beter?</h3></div>,
+          content: <div><h2>Can you do better?</h2><h3>Click to expand.</h3></div>,
           target: ".article1",
-          disableOverlay:true,
           style:{zIndex:1005},
           disableBeacon: true,
         },
         {
-          content:<div><h2>Click a story to participate.</h2><h3></h3></div>,
+          content:<div><h2>Vote or write a headline.</h2><h3></h3></div>,
           target: ".itemcontainer",
-          disableOverlay:true,
-          styles:{zIndex:1005},
+           styles: {
+              options: {
+                overlayColor:"rgba(0,0,0,0)",
+                spotlightShadow:"",
+              },
+              spotlight:{
+                backgroundColor:"rgba(0,0,0,0)"
+              }
+            },
           disableBeacon: true,
         },
         {
-          title: "LAST ...",
-          target: ".about_top_link",
-          content: <div><Link to='/active'>Active</Link></div>,
+          content:<div><h2>Click around and explore!</h2><h3></h3></div>,
+          target: "body",
+          placement:"center",
           disableBeacon: true,
         },
       ]
@@ -91,30 +97,29 @@ class OnboardingSteps extends React.Component{
     const { action, index, type, status } = data;
 
     // 2 to 3
-    if (type==EVENTS.STEP_AFTER && index==2 && action==ACTIONS.NEXT) {
-      this.props.force_click();
+    if (type==EVENTS.STEP_AFTER && index==2 && (action==ACTIONS.NEXT || action==ACTIONS.CLOSE)) {
+      this.props.force_click(true);
     }
     // 3 to 4
-    if (type==EVENTS.STEP_AFTER && index==3 && action==ACTIONS.NEXT) {
-      this.props.force_click();
+    if (type==EVENTS.STEP_AFTER && index==3 && (action==ACTIONS.NEXT || action==ACTIONS.CLOSE)) {
+      this.props.force_click(false);
     }
     // 4 to 3
-    else if (type==EVENTS.STEP_AFTER && index==4 && action==ACTIONS.PREV) {
-      this.props.force_click();
+    if (type==EVENTS.STEP_AFTER && index==4 && action==ACTIONS.PREV) {
+      this.props.force_click(true);
     }
     // 3 to 2
-    else if (type==EVENTS.STEP_AFTER && index==3 && action==ACTIONS.PREV) {
-      this.props.force_click();
+    if (type==EVENTS.STEP_AFTER && index==3 && action==ACTIONS.PREV) {
+      this.props.force_click(false);
     }
-
     if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status) && this.state.run) {
       this.props.toggle_tour();
-      this.setState({ run: false });
     } 
     //VERY IMPORTANT
     //To show across pages, you have to sent the run state to false. 
     // from step zero to step one
-    else if (type==EVENTS.STEP_AFTER && index==0 && action==ACTIONS.NEXT) {
+    // this is 0 to 1
+    else if (type==EVENTS.STEP_AFTER && index==0 && (action==ACTIONS.NEXT || action==ACTIONS.CLOSE)) {
       this.setState({loading:true,run:false})
       this.props.history.push('/active');
       setTimeout(() => {
@@ -128,7 +133,6 @@ class OnboardingSteps extends React.Component{
 
     // from step 1 back to step 0
     else if (type==EVENTS.STEP_AFTER && index==1 && action==ACTIONS.PREV) {
-      console.log(data); 
       this.setState({loading:true,run:false})
       this.props.history.push('/');
       setTimeout(() => {
@@ -141,6 +145,7 @@ class OnboardingSteps extends React.Component{
     }
 
     else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
+      console.log('doing a normal index update');
       // Update state to advance the tour
       this.setState({ stepindex: index + (action === ACTIONS.PREV ? -1 : 1) });
     } 
@@ -150,13 +155,18 @@ class OnboardingSteps extends React.Component{
     }
 
   }
+  
   render() {
+    let styles = {options: 
+      {spotlight:{borderRadius:1000}}
+    };
+
     return (<React.Fragment>
       <ReactJoyride
-        steps={this.state.steps}
-        stepIndex={this.state.stepindex}
-        run={this.state.run}
         callback={this.handleCallback.bind(this)}
+        stepIndex={this.state.stepindex}
+        steps={this.state.steps}
+        run={this.state.run}
         continuous={true}
         showProgress
         styles={{
@@ -171,7 +181,7 @@ class OnboardingSteps extends React.Component{
 }
 let mstp = (state) => state;
 let mdtp = dispatch => ({
-  force_click: () => {dispatch(forceClickAction());},
+  force_click: (target) => {dispatch(forceClickAction(target));},
   toggle_tour: () => {dispatch(toggleTourAction());},
 })
 export default connect(mstp,mdtp)(withRouter(OnboardingSteps));

@@ -22,24 +22,20 @@ class NewspaperItem extends React.Component {
 		if (props.num==0) this.state={hovering:false, big:true};
 		else this.state={hovering:false, big:false}; 
 		*/
-		this.state={hovering:false, big:false, oldurl:null};
+		this.state={hovering:false, big:false};
 	}
 	mouseEnter(){
+		if (this.props.tour) return;
 		this.setState({hovering:true});
 	}
 	mouseLeave(){
+		if (this.props.tour) return;
 		this.setState({hovering:false});
 	}
 	click() {
-		let url = this.props.history.location.pathname;
-		if (this.state.big) {
-			console.log('setting big to false');
-			this.setState({big:false});
-		}
-		else {
-			console.log('setting big to true');
-			this.setState({oldurl:url, big:true});
-		}
+		console.log('hi?');
+		if (this.props.tour) return;
+		this.setState({big:!this.state.big});
 	}
 	render() {
 		let hovering = this.state.hovering;
@@ -65,8 +61,20 @@ class NewspaperItem extends React.Component {
 		}
 
 		let force_clicked = this.props.force_click && this.props.num==0;
+		if (force_clicked) {
+			return (
+			 	<div> 
+			        <div className="blocker" onClick={this.click.bind(this)}></div>
+			        <div className="big" >
+				         <Item 
+				            post = {this.props.post}
+				            show={4}
+				         />
+				 	</div>
+			 	</div>);
+		}	
 		// display Item instead of NewspaperItem
-		if (this.state.big || force_clicked) {
+		else if (this.state.big) {
 			return (
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
