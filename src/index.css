@@ -6,6 +6,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.intro_tour {
+  font-family: source-code-pro, menlo, monaco, consolas, "courier new", monospace;
+}
+.intro_tour h2 {
+}
+.intro_tour h3 {
+  font-weight:normal;
+}
 .close_landing_overlay {
   display:flex;
   justify-content:space-between;

@@ -17,15 +17,10 @@ import uuid from 'uuid';
     appId: "1:924993359943:web:99b6abdc71d38c4316e162",
     measurementId: "G-LRJS1QWZZR"
   };
-
-let date = () => (new Date()).toJSON().slice(0,10);
-
-// 'production' means demo on bottonshelfnews.github.io, frozen to Jan 8th
+// 'production' means demo on bottonshelfnews.github.io, database filled with demo data
 if (process.env.NODE_ENV === 'production') {
-	date = () => "2020-01-08";
+	firebaseConfig.databaseURL = "https://bottomshelfnews-demodata.firebaseio.com";
 }
-let yesterday = () => (new Date(new Date().setDate(new Date().getDate()-1))).getTime();
-
 class Firebase {
 	// onAuthStateChange is a funciton called whenever a successful login/out occurs
 	constructor() {
@@ -205,15 +200,6 @@ class Firebase {
 		/* TODO: Filter to most recent 10ish? */
 		let stories = this.db.ref('stories')
 		.orderByChild('timestamp')
-		.once('value');
-		return stories;
-	}
-
-	getTodayPosts = () => {
-		let cutoff = yesterday();
-		let stories = this.db.ref('stories')
-		.orderByChild('timestamp')
-		.startAt(cutoff)
 		.once('value');
 		return stories;
 	}

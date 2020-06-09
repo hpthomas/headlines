@@ -45,25 +45,25 @@ class OnboardingSteps extends React.Component{
       run: true,
       steps: [
         {
-          content: <div><h2>Read the News!</h2><h3></h3></div>,
+          content: <div className='intro_tour'><h2>Read the News!</h2><h3></h3></div>,
           target: ".home_top_link",
           placement: "auto",
           disableBeacon: true,
         },
         {
-          content: <div><h2>Write the News!</h2><h3>Stories here need headlines.</h3></div>,
+          content: <div className='intro_tour'><h2>Write the News!</h2><h3>We're still writing and voting on these stories.</h3></div>,
           target: ".active_top_link",
           placement: "auto",
           disableBeacon: true,
         },
         {
-          content: <div><h2>Can you do better?</h2><h3>Click to expand.</h3></div>,
+          content: <div className='intro_tour'><h2>Can you do better?</h2><h3>Click to expand.</h3></div>,
           target: ".article1",
           style:{zIndex:1005},
           disableBeacon: true,
         },
         {
-          content:<div><h2>Vote or write a headline.</h2><h3></h3></div>,
+          content:<div className='intro_tour'><h2>Vote or write a headline.</h2><h3></h3></div>,
           target: ".itemcontainer",
            styles: {
               options: {
@@ -77,7 +77,7 @@ class OnboardingSteps extends React.Component{
           disableBeacon: true,
         },
         {
-          content:<div><h2>Click around and explore!</h2><h3></h3></div>,
+          content:<div className='intro_tour'><h2>Click around and explore!</h2><h3></h3></div>,
           target: "body",
           placement:"center",
           disableBeacon: true,
@@ -157,10 +157,20 @@ class OnboardingSteps extends React.Component{
   }
   
   render() {
-    let styles = {options: 
-      {spotlight:{borderRadius:1000}}
-    };
+    let styles = {
+        options: {
+          primaryColor: '#000',
+          textColor: '#333',
+          zIndex: 1005,
+        },
+        tooltip: {
+          padding:5
+        },
+        tooltipContent: {
+          padding: '10px 5px',
+       },
 
+    };
     return (<React.Fragment>
       <ReactJoyride
         callback={this.handleCallback.bind(this)}
@@ -169,12 +179,7 @@ class OnboardingSteps extends React.Component{
         run={this.state.run}
         continuous={true}
         showProgress
-        styles={{
-            options: {
-              zIndex: 1005,
-            }
-          }}
-
+        styles={styles}
         showSkipButton />
     </React.Fragment>);
   };

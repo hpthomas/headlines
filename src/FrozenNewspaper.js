@@ -39,7 +39,7 @@ class FrozenNewspaper extends React.Component {
 						<div className='landing_overlay'>
 							<div className='close_landing_overlay'>
 								<span className='closebutton'></span> {/* this is a dummy span to center 'Welcome' w button right-aligned */}
-								<span>Welcome!</span>
+								<span>Welcome</span>
 								<span className='closebutton' onClick={this.closeWelcome.bind(this)}>x</span>
 							</div>
 							<Welcome close={this.closeWelcome.bind(this)} />
