@@ -18,6 +18,7 @@ titles without submissions should be highlighted.
 class NewspaperItem extends React.Component {
 	constructor(props){
 		super(props);
+		this.top_ref = React.createRef();
 		/*
 		if (props.num==0) this.state={hovering:false, big:true};
 		else this.state={hovering:false, big:false}; 
@@ -33,7 +34,6 @@ class NewspaperItem extends React.Component {
 		this.setState({hovering:false});
 	}
 	click() {
-		console.log('hi?');
 		if (this.props.tour) return;
 		this.setState({big:!this.state.big});
 	}
@@ -62,10 +62,16 @@ class NewspaperItem extends React.Component {
 
 		let force_clicked = this.props.force_click && this.props.num==0;
 		if (force_clicked) {
+			let top_offset = this.top_ref.current.offsetTop;
+			let scroll_location = window.pageYOffset;
+			let pos = top_offset - scroll_location;
+			if (pos>120) {
+				top_offset -= (pos-120);
+			}
 			return (
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
-			        <div className="big" >
+			        <div className="big" style={{top:top_offset}}>
 				         <Item 
 				            post = {this.props.post}
 				            show={4}
@@ -75,10 +81,17 @@ class NewspaperItem extends React.Component {
 		}	
 		// display Item instead of NewspaperItem
 		else if (this.state.big) {
+			let top_offset = this.top_ref.current.offsetTop;
+			let scroll_location = window.pageYOffset;
+			let pos = top_offset - scroll_location;
+			if (pos>120) {
+				top_offset -= (pos-120);
+			}
+
 			return (
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
-			        <div className="big" >
+			        <div className="big" style={{top:top_offset}}>
 				         <Item 
 				            post = {this.props.post}
 				            show={4}
@@ -129,7 +142,7 @@ class NewspaperItem extends React.Component {
 
 
 		return (
-	 	<article className={css_class} onClick={this.click.bind(this)} onTouchStart={this.mouseEnter.bind(this)} onTouchEnd={this.mouseLeave.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
+	 	<article ref={this.top_ref} className={css_class} onClick={this.click.bind(this)} onTouchStart={this.mouseEnter.bind(this)} onTouchEnd={this.mouseLeave.bind(this)} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} >
 	 		<h2> 
 	 			{best ? best.headline : "?"}
 	 		</h2>

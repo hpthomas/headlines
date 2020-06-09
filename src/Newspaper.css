@@ -175,10 +175,9 @@ div.big {
 position:absolute;
 z-index: 1003;
 width: 65%;
-top: 15%;
 
 left: 17%;
-height:auto;
+height:500px;
 padding-bottom:0;
 font-family: timesnewroman, "times new roman", times, baskerville, georgia, serif;
 }
@@ -246,6 +245,7 @@ font-family: timesnewroman, "times new roman", times, baskerville, georgia, seri
   width:100%;
 }
 .itemcontainer{
+  position:relative;
   display:flex;
   margin-bottom:0;
   flex-direction:column;
