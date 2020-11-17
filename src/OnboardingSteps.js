@@ -77,7 +77,7 @@ class OnboardingSteps extends React.Component{
           disableBeacon: true,
         },
         {
-          content:<div className='intro_tour'><h2>Click around and explore!</h2><h3></h3></div>,
+          content:<div className='intro_tour'><h2>Explore!</h2><h3></h3></div>,
           target: "body",
           placement:"center",
           disableBeacon: true,

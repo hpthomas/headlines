@@ -173,18 +173,14 @@ background-color:rgba(0, 0, 0, 0.5);
 
 div.big {
 position:absolute;
-z-index: 1003;
 width: 65%;
-
 left: 17%;
-height:500px;
 padding-bottom:0;
 font-family: timesnewroman, "times new roman", times, baskerville, georgia, serif;
 }
 @media only screen and (max-width : 568px) {
   div.big {
     position:fixed;
-    z-index: 1003;
     width: 90%;
     top: 4em;
     left: 5%;
@@ -245,9 +241,10 @@ font-family: timesnewroman, "times new roman", times, baskerville, georgia, seri
   width:100%;
 }
 .itemcontainer{
+  z-index:1003;
   position:relative;
   display:flex;
-  margin-bottom:0;
+  margin-bottom:15px;
   flex-direction:column;
   align-items:center;
   background-color: #f9f7f1;

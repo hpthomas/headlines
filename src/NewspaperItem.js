@@ -62,12 +62,8 @@ class NewspaperItem extends React.Component {
 
 		let force_clicked = this.props.force_click && this.props.num==0;
 		if (force_clicked) {
-			let top_offset = this.top_ref.current.offsetTop;
 			let scroll_location = window.pageYOffset;
-			let pos = top_offset - scroll_location;
-			if (pos>120) {
-				top_offset -= (pos-120);
-			}
+			let top_offset = scroll_location+120;
 			return (
 			 	<div> 
 			        <div className="blocker" onClick={this.click.bind(this)}></div>
@@ -81,12 +77,8 @@ class NewspaperItem extends React.Component {
 		}	
 		// display Item instead of NewspaperItem
 		else if (this.state.big) {
-			let top_offset = this.top_ref.current.offsetTop;
 			let scroll_location = window.pageYOffset;
-			let pos = top_offset - scroll_location;
-			if (pos>120) {
-				top_offset -= (pos-120);
-			}
+			let top_offset = scroll_location+120;
 
 			return (
 			 	<div> 

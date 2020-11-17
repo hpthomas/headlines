@@ -75,7 +75,6 @@ class TopBar extends React.Component{
 					</div>
 				</div>
 				<h1 className='news_header'> Bottom Shelf News </h1>
-				<h2 className='news_header'> A comedy newspaper where the users write the headlines.</h2>
 				<Route exact path='/' component = {FrozenNewspaper} />
 				<Route path='/active' component = {Newspaper} />
 				<Route path='/archive' component = {NewsHome} />
