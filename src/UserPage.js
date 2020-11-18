@@ -1,24 +1,46 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import gotPostsAction from './actions/gotPostsAction';
 import {connect} from 'react-redux';
 import ItemList from './ItemList';
 import sortHeadlines from './util/sortHeadlines';
+import {useAuth0} from '@auth0/auth0-react';
 
-class UserPage extends React.Component {
-	constructor() {
-		super();
-		this.state = {active:null, frozen:null}
+function UserPage(props) {
+	const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+	const [userMetadata, setUserMetadata] = useState(null);
+	console.log(user)
+	if (isAuthenticated) {
+		let token = getAccessTokenSilently({
+			audience : "https://bottomshelfnews.com",
+			scope: "read:current_user"
+		})
+		.then(token =>{
+			let response = fetch("http://localhost:8000/stories", {
+				headers :  {
+					Authorization: `Bearer ${token}`
+				}
+			})
+			return response;
+		})
+		.then(response => response.json())
+		.then(response => console.log(response))
+		return <div>hi there {user.nickname}, {user.email}</div>
 	}
-	componentDidMount() {
+	return <div>hi</div>
+}
+	/* 
 		let user = this.props.match.params.user;
 		this.props.firebase.getSubmissionsByUser(user)
 		.then(res => res.val())
 		.then(posts => {
 			if (!posts || !posts.stories) return;
+
 			let story_keys = Object.keys(posts.stories);
 			let active = story_keys.filter(k=>posts.stories[k].status==='active');
 			let frozen = story_keys.filter(k=>posts.stories[k].status==='frozen');
-
+			console.log(story_keys)
+			console.log(active)
+			console.log(frozen)
 			let active_promises = active.map(k=>this.props.firebase.getStoryByID(k));
 			Promise.all(active_promises)
 			.then(res=>res.map(item=>item.val()))
@@ -62,6 +84,7 @@ class UserPage extends React.Component {
 		</div>);
 	}
 }
+*/
 let mstp = state => {
 	return {firebase:state.firebase};
 }

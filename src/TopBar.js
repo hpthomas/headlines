@@ -13,6 +13,7 @@ import NewPost from './NewPost';
 import Detail from './Detail';
 import AdminPanel from './AdminPanel';
 import OnboardingSteps from './OnboardingSteps';
+import AuthZeroLogin from './AuthZeroLogin';
 
 class TopBar extends React.Component{
 	constructor(props) {
@@ -55,6 +56,9 @@ class TopBar extends React.Component{
 								<Link to={'/about'}>
 									About
 								</Link>
+							</li>
+							<li>
+								<AuthZeroLogin />
 							</li>
 						</ul>
 					</div>
